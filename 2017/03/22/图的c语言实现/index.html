@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head><meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+<meta name="description" content="图的c语言实现"/><meta name="keywords" content="图, Ehds" /><link rel="alternate" href="/atom.xml" title="Ehds"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=2.11.0" />
+<link rel="canonical" href="http://ehds.github.io/2017/03/22/图的c语言实现/"/>
+
+<link rel="stylesheet" type="text/css" href="/lib/fancybox/jquery.fancybox.css" /><script type="text/x-mathjax-config">
+    MathJax.Hub.Config({ tex2jax: { inlineMath: [['$','$'], ['\\(','\\)']] } });
+  </script>
+  <script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+<link rel="stylesheet" type="text/css" href="/css/style.css?v=2.11.0" />
+
+<script id="baidu_push">
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+<script>
+  window.config = {"leancloud":{"app_id":null,"app_key":null},"toc":true,"fancybox":true,"pjax":"","latex":true};
+</script>
+
+    <title>图的c语言实现 - Ehds</title>
+  <meta name="generator" content="Hexo 4.2.1"><link rel="alternate" href="/atom.xml" title="Ehds" type="application/atom+xml">
+</head>
+
+  <body><div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/." class="logo">Ehds</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list"><a href="/">
+        <li class="mobile-menu-item">Home
+          </li>
+      </a><a href="/archives/">
+        <li class="mobile-menu-item">Archives
+          </li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">Tags
+          </li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">Categories
+          </li>
+      </a><a href="/about/">
+        <li class="mobile-menu-item">About
+          </li>
+      </a></ul>
+</nav>
+<div class="container" id="mobile-panel">
+      <header id="header" class="header"><div class="logo-wrapper">
+  <a href="/." class="logo">Ehds</a>
+</div>
+
+<nav class="site-navbar"><ul id="menu" class="menu"><li class="menu-item">
+          <a class="menu-item-link" href="/">
+            Home
+            </a>
+        </li>
+      <li class="menu-item">
+          <a class="menu-item-link" href="/archives/">
+            Archives
+            </a>
+        </li>
+      <li class="menu-item">
+          <a class="menu-item-link" href="/tags/">
+            Tags
+            </a>
+        </li>
+      <li class="menu-item">
+          <a class="menu-item-link" href="/categories/">
+            Categories
+            </a>
+        </li>
+      <li class="menu-item">
+          <a class="menu-item-link" href="/about/">
+            About
+            </a>
+        </li>
+      </ul></nav>
+</header>
+
+      <main id="main" class="main">
+        <div class="content-wrapper">
+          <div id="content" class="content"><article class="post">
+    <header class="post-header">
+      <h1 class="post-title">图的c语言实现
+        </h1>
+
+      <div class="post-meta">
+        <span class="post-time">
+          2017-03-22
+        </span><span class="post-category">
+            <a href="/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/">数据结构</a>
+            </span>
+        </div>
+    </header>
+
+    <div class="post-content"><p><img src="http://img0.ph.126.net/J1FGNtVPcUpGUcA5EBjXQQ==/6632428961094467505.jpg" alt="image"></p>
+<a id="more"></a> 
+<p>一、图的存储结构<br>1.1 邻接矩阵<br>    图的邻接矩阵存储方式是用两个数组来表示图。一个一维数组存储图中顶点信息，一个二维数组（邻接矩阵）存储图中的边或弧的信息。<br>    设图G有n个顶点，则邻接矩阵是一个n*n的方阵，定义为：<br>    <img src="http://blog.chinaunix.net/attachment/201301/28/26548237_1359358455QE9d.png" alt="image"></p>
+<pre><code>看一个实例，下图左就是一个无向图。</code></pre><p> <img src="http://img0.ph.126.net/J1FGNtVPcUpGUcA5EBjXQQ==/6632428961094467505.jpg" alt="image"></p>
+<p>从上面可以看出，无向图的边数组是一个对称矩阵。所谓对称矩阵就是n阶矩阵的元满足aij = aji。即从矩阵的左上角到右下角的主对角线为轴，右上角的元和左下角相对应的元全都是相等的。<br>从这个矩阵中，很容易知道图中的信息。<br>（1）要判断任意两顶点是否有边无边就很容易了；<br>（2）要知道某个顶点的度，其实就是这个顶点vi在邻接矩阵中第i行或（第i列）的元素之和；<br>（3）求顶点vi的所有邻接点就是将矩阵中第i行元素扫描一遍，arc[i][j]为1就是邻接点；<br>而有向图讲究入度和出度，顶点vi的入度为1，正好是第i列各数之和。顶点vi的出度为2，即第i行的各数之和。<br>若图G是网图，有n个顶点，则邻接矩阵是一个n*n的方阵，定义为：</p>
+<p><img src="http://blog.chinaunix.net/attachment/201301/28/26548237_1359358929SkA2.png" alt="image"></p>
+<p>这里的wij表示(vi,vj)上的权值。无穷大表示一个计算机允许的、大于所有边上权值的值，也就是一个不可能的极限值。下面左图就是一个有向网图，右图就是它的邻接矩阵。</p>
+<p><img src="http://blog.chinaunix.net/attachment/201301/28/26548237_1359359055yEhp.png" alt="image"></p>
+<p>图的邻接矩阵表示法（C语言实现）</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* 图的邻接矩阵表示法（C语言实现） */</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span>  MaxVertexNum  100      <span class="comment">/* 最大顶点数设为100 */</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span>  INFINITY  65535     <span class="comment">/* ∞设为双字节无符号整数的最大值65535*/</span></span></span><br><span class="line"><span class="keyword">typedef</span>  <span class="keyword">char</span>  VertexType;      <span class="comment">/* 顶点类型设为字符型 */</span></span><br><span class="line"><span class="keyword">typedef</span>  <span class="keyword">int</span>  EdgeType;         <span class="comment">/* 边的权值设为整型 */</span></span><br><span class="line"><span class="keyword">enum</span> GraphType &#123; DG, UG, DN, UN &#125;;  </span><br><span class="line"><span class="comment">/* 有向图,无向图,有向网图,无向网图*/</span></span><br><span class="line">  </span><br><span class="line"><span class="keyword">typedef</span>  <span class="class"><span class="keyword">struct</span> &#123;</span></span><br><span class="line">    VertexType  Vertices[ MaxVertexNum ];  <span class="comment">/* 顶点表 */</span></span><br><span class="line">    EdgeType  Edges[ MaxVertexNum ][ MaxVertexNum ]; </span><br><span class="line"><span class="comment">/* 邻接矩阵，即边表  */</span></span><br><span class="line">    <span class="keyword">int</span>  n, e;   <span class="comment">/* 顶点数n和边数e */</span></span><br><span class="line">    <span class="keyword">enum</span> GraphType GType;   <span class="comment">/* 图的类型分4种：UG、DG、UN、DN */</span></span><br><span class="line">&#125; MGraph;    <span class="comment">/* MGragh是以邻接矩阵存储的图类型 */</span></span><br><span class="line">  </span><br><span class="line"><span class="function"><span class="keyword">void</span>  <span class="title">CreateMGraph</span> <span class="params">( MGraph *G )</span></span></span><br><span class="line"><span class="function"></span>&#123;  </span><br><span class="line">    <span class="keyword">int</span>  i, j, k, w;</span><br><span class="line">    G-&gt; GType = UN;    <span class="comment">/* Undirected Network  无向网图  */</span></span><br><span class="line">    <span class="built_in">printf</span>( <span class="string">"请输入顶点数和边数(输入格式为:顶点数, 边数):\n"</span> );</span><br><span class="line">    <span class="built_in">scanf</span>( <span class="string">"%d, %d"</span>,&amp;(G-&gt;n), &amp;(G-&gt;e) ); <span class="comment">/* 输入顶点数和边数 */</span></span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"请输入顶点信息(输入格式为:顶点号&lt;CR&gt;):\n"</span>);</span><br><span class="line">    <span class="keyword">for</span> ( i = <span class="number">0</span>; i &lt; G-&gt;n; i++ ) </span><br><span class="line">       <span class="built_in">scanf</span>( <span class="string">"%c"</span>,&amp;(G-&gt; Vertices[i]) ); <span class="comment">/*  输入顶点信息，建立顶点表  */</span></span><br><span class="line">    <span class="keyword">for</span> ( i = <span class="number">0</span>; i &lt; G-&gt;n; i++ )</span><br><span class="line">       <span class="keyword">for</span> ( j = <span class="number">0</span>; j &lt; G-&gt;n; j++ )  </span><br><span class="line">           G-&gt;Edges[i][j] = INFINITY; <span class="comment">/* 初始化邻接矩阵 */</span></span><br><span class="line">    <span class="built_in">printf</span>( <span class="string">"请输入每条边对应的两个顶点的序号和权值，输入格式为:i, j, w:\n"</span> );</span><br><span class="line">    <span class="keyword">for</span> ( k = <span class="number">0</span>; k &lt; G-&gt;e; k++ ) &#123;</span><br><span class="line">       <span class="built_in">scanf</span>(<span class="string">"%d,%d,%d "</span>,&amp;i, &amp;j, &amp;w); <span class="comment">/* 输入e条边上的权，建立邻接矩阵 */</span></span><br><span class="line">       G-&gt;Edges[i][j] = w; </span><br><span class="line">       G-&gt;Edges[j][i] = w; <span class="comment">/* 因为无向网图的邻接矩阵是对称的 */</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>图的邻接表表示法（C语言实现）</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* 图的邻接表表示法（C语言实现） */</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span>  MaxVertexNum  100     <span class="comment">/* 最大顶点数为100 */</span></span></span><br><span class="line"><span class="keyword">enum</span> GraphType &#123; DG, UG, DN, UN &#125;; </span><br><span class="line"><span class="comment">/* 有向图,无向图,有向网图,无向网图*/</span></span><br><span class="line"><span class="keyword">typedef</span>  <span class="class"><span class="keyword">struct</span>  <span class="title">node</span>&#123;</span>   <span class="comment">/* 边表结点 */</span></span><br><span class="line">    <span class="keyword">int</span> AdjV;            <span class="comment">/* 邻接点域 */</span></span><br><span class="line">    <span class="class"><span class="keyword">struct</span>  <span class="title">node</span>  *<span class="title">Next</span>;</span>  <span class="comment">/* 指向下一个邻接点的指针域 */</span></span><br><span class="line">    <span class="comment">/* 若要表示边上的权值信息，则应增加一个数据域Weight */</span></span><br><span class="line">&#125; EdgeNode;</span><br><span class="line"><span class="keyword">typedef</span>  <span class="keyword">char</span>  VertexType;   <span class="comment">/* 顶点用字符表示 */</span></span><br><span class="line"><span class="keyword">typedef</span>  <span class="class"><span class="keyword">struct</span>  <span class="title">Vnode</span>&#123;</span>      <span class="comment">/* 顶点表结点 */</span></span><br><span class="line">    VertexType  Vertex;      <span class="comment">/* 顶点域 */</span></span><br><span class="line">    EdgeNode  *FirstEdge; <span class="comment">/* 边表头指针 */</span></span><br><span class="line">&#125; VertexNode; </span><br><span class="line"><span class="keyword">typedef</span> VertexNode AdjList[ MaxVertexNum ]; <span class="comment">/* AdjList是邻接表类型 */</span></span><br><span class="line"><span class="keyword">typedef</span>  <span class="class"><span class="keyword">struct</span>&#123;</span>  </span><br><span class="line">    AdjList  adjlist;    <span class="comment">/* 邻接表 */</span></span><br><span class="line">    <span class="keyword">int</span>  n, e;               <span class="comment">/* 顶点数和边数 */</span></span><br><span class="line">    <span class="keyword">enum</span> GraphType GType;    <span class="comment">/* 图的类型分4种：UG、DG、UN、DN */</span></span><br><span class="line">&#125; ALGraph;  <span class="comment">/*ALGraph是以邻接表方式存储的图类型 */</span></span><br><span class="line">  </span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">CreateALGraph</span><span class="params">( ALGraph *G )</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> i, j, k;</span><br><span class="line">    EdgeNode *edge;</span><br><span class="line">    G-&gt; GType = DG;  <span class="comment">/* Directed Graph  有向图  */</span></span><br><span class="line">    <span class="built_in">printf</span>( <span class="string">"请输入顶点数和边数(输入格式为:顶点数,边数)：\n"</span> );</span><br><span class="line">    <span class="built_in">scanf</span>( <span class="string">"%d,%d"</span>, &amp;(G-&gt;n), &amp;(G-&gt;e) ); <span class="comment">/* 读入顶点数和边数 */</span> </span><br><span class="line">    <span class="built_in">printf</span>( <span class="string">"请输入顶点信息(输入格式为:顶点号&lt;CR&gt;)：\n"</span> );</span><br><span class="line">    <span class="keyword">for</span> ( i=<span class="number">0</span>; i &lt; G-&gt;n; i++ ) &#123;   <span class="comment">/* 建立有n个顶点的顶点表 */</span></span><br><span class="line">        <span class="built_in">scanf</span>( <span class="string">" %c"</span>, &amp;(G-&gt;adjlist[i].Vertex) );  <span class="comment">/* 读入顶点信息 */</span></span><br><span class="line">       G-&gt;adjlist[i].FirstEdge = <span class="literal">NULL</span>; <span class="comment">/* 顶点的边表头指针设为空 */</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">printf</span>( <span class="string">"请输入边的信息(输入格式为: i, j &lt;CR&gt;)：\n"</span> );</span><br><span class="line">    <span class="keyword">for</span> ( k=<span class="number">0</span>; k &lt; G-&gt;e; k++ )&#123;   <span class="comment">/* 建立边表 */</span></span><br><span class="line">       <span class="built_in">scanf</span>( <span class="string">"\n%d,%d"</span>, &amp;i, &amp;j); <span class="comment">/* 读入边&lt;vi,vj&gt;的顶点对应序号*/</span></span><br><span class="line">       edge = (EdgeNode*)<span class="built_in">malloc</span>(<span class="keyword">sizeof</span>(EdgeNode)); <span class="comment">/* 生成新边结点edge */</span></span><br><span class="line">       edge-&gt;AdjV = j; <span class="comment">/* 邻接点序号为j */</span></span><br><span class="line">       edge-&gt;Next = G-&gt;adjlist[i].FirstEdge;</span><br><span class="line">       <span class="comment">/* 将新边表结点edge插入到顶点vi的边表头部 */</span></span><br><span class="line">       G-&gt;adjlist[i].FirstEdge = edge;</span><br><span class="line">       <span class="comment">/* 若是无向图，还要生成一个结点，用来表示边&lt; vj, vi&gt;  */</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+      </div>
+      <div class="post-copyright">
+    <p class="copyright-item">
+      <span>Author: </span>
+      <a href="http://ehds.github.io">DongSheng</a>
+    </p>
+    <p class="copyright-item">
+      <span>Link: </span>
+      <a href="http://ehds.github.io/2017/03/22/%E5%9B%BE%E7%9A%84c%E8%AF%AD%E8%A8%80%E5%AE%9E%E7%8E%B0/">http://ehds.github.io/2017/03/22/%E5%9B%BE%E7%9A%84c%E8%AF%AD%E8%A8%80%E5%AE%9E%E7%8E%B0/</a>
+    </p>
+    <p class="copyright-item">
+      <span>License: </span><a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/" target="_blank">知识共享署名-非商业性使用 4.0 国际许可协议</a>
+    </p>
+  </div>
+      <footer class="post-footer">
+        <div class="post-tags">
+            <a href="/tags/%E5%9B%BE/">图</a>
+            </div>
+        
+        <nav class="post-nav"><a class="prev" href="/2017/04/25/AI-2048/">
+        <i class="iconfont icon-left"></i>
+        <span class="prev-text nav-default">AI-2048</span>
+        <span class="prev-text nav-mobile">Prev</span>
+      </a>
+    <a class="next" href="/2017/02/10/y-New-Post/">
+        <span class="next-text nav-default">ImageNoise</span>
+        <span class="prev-text nav-mobile">Next</span>
+        <i class="iconfont icon-right"></i>
+      </a>
+    </nav></footer>
+    </article></div><div class="comments" id="comments"><div id="gitalk-container"></div>
+    </div></div>
+      </main>
+
+      <footer id="footer" class="footer"><div class="social-links"><a href="mailto:ehds@qq.com" class="iconfont icon-email" title="email"></a>
+        <a href="https://github.com/ehds" target="_blank" rel="noopener" class="iconfont icon-github" title="github"></a>
+        <a href="/atom.xml" class="iconfont icon-rss" title="rss"></a>
+    </div><div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a>
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    Theme - 
+    <a class="theme-link" href="https://github.com/ahonn/hexo-theme-even" target="_blank" rel="noopener">Even</a>
+  </span>
+
+  <span class="copyright-year">&copy;2017 - 2022<span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">DongSheng</span>
+  </span>
+</div>
+</footer>
+
+      <div class="back-to-top" id="back-to-top">
+        <i class="iconfont icon-up"></i>
+      </div>
+    </div>
+<script src="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.css"/>
+
+
+<script src="//cdn.jsdelivr.net/npm/js-md5@0.7.3/src/md5.min.js"></script>
+
+<script>
+  var gitalk = new Gitalk({
+    clientID: 'b75057216cc9401f28a0',
+    clientSecret: '6089f1aac89dc7f55aa1cceab307a61e85399bfc',
+    repo: 'ehds.github.io',
+    owner: 'ehds',
+    admin: ['ehds'],
+    id: md5(location.pathname),
+    
+      language: 'en',
+    
+    distractionFreeMode: 'true'
+  });
+  gitalk.render('gitalk-container');
+</script><script type="text/javascript" src="/lib/jquery/jquery.min.js"></script>
+  <script type="text/javascript" src="/lib/slideout/slideout.js"></script>
+  <script type="text/javascript" src="/lib/fancybox/jquery.fancybox.pack.js"></script>
+  <script type="text/javascript" src="/js/src/even.js?v=2.11.0"></script>
+</body>
+</html>

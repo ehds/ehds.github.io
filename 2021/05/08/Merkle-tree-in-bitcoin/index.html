@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head><meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+<meta name="description" content="Merkle-Tree在比特币中的应用"/><meta name="keywords" content="比特币, 区块链, Merkle Tree, Ehds" /><link rel="alternate" href="/atom.xml" title="Ehds"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=2.11.0" />
+<link rel="canonical" href="http://ehds.github.io/2021/05/08/Merkle-tree-in-bitcoin/"/>
+
+<link rel="stylesheet" type="text/css" href="/lib/fancybox/jquery.fancybox.css" /><script type="text/x-mathjax-config">
+    MathJax.Hub.Config({ tex2jax: { inlineMath: [['$','$'], ['\\(','\\)']] } });
+  </script>
+  <script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+<link rel="stylesheet" type="text/css" href="/css/style.css?v=2.11.0" />
+
+<script id="baidu_push">
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+<script>
+  window.config = {"leancloud":{"app_id":null,"app_key":null},"toc":true,"fancybox":true,"pjax":"","latex":true};
+</script>
+
+    <title>Merkle-Tree在比特币中的应用 - Ehds</title>
+  <meta name="generator" content="Hexo 4.2.1"><link rel="alternate" href="/atom.xml" title="Ehds" type="application/atom+xml">
+</head>
+
+  <body><div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/." class="logo">Ehds</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list"><a href="/">
+        <li class="mobile-menu-item">Home
+          </li>
+      </a><a href="/archives/">
+        <li class="mobile-menu-item">Archives
+          </li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">Tags
+          </li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">Categories
+          </li>
+      </a><a href="/about/">
+        <li class="mobile-menu-item">About
+          </li>
+      </a></ul>
+</nav>
+<div class="container" id="mobile-panel">
+      <header id="header" class="header"><div class="logo-wrapper">
+  <a href="/." class="logo">Ehds</a>
+</div>
+
+<nav class="site-navbar"><ul id="menu" class="menu"><li class="menu-item">
+          <a class="menu-item-link" href="/">
+            Home
+            </a>
+        </li>
+      <li class="menu-item">
+          <a class="menu-item-link" href="/archives/">
+            Archives
+            </a>
+        </li>
+      <li class="menu-item">
+          <a class="menu-item-link" href="/tags/">
+            Tags
+            </a>
+        </li>
+      <li class="menu-item">
+          <a class="menu-item-link" href="/categories/">
+            Categories
+            </a>
+        </li>
+      <li class="menu-item">
+          <a class="menu-item-link" href="/about/">
+            About
+            </a>
+        </li>
+      </ul></nav>
+</header>
+
+      <main id="main" class="main">
+        <div class="content-wrapper">
+          <div id="content" class="content"><article class="post">
+    <header class="post-header">
+      <h1 class="post-title">Merkle-Tree在比特币中的应用
+        </h1>
+
+      <div class="post-meta">
+        <span class="post-time">
+          2021-05-08
+        </span><span class="post-category">
+            <a href="/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/">数据结构</a>
+            </span>
+        </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+    <h2 class="post-toc-title">Contents</h2>
+    <div class="post-toc-content">
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Merkle-Tree"><span class="toc-text">Merkle Tree</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-1-检验数据的有效性"><span class="toc-text">1.1 检验数据的有效性</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-2-Merkle-Tree-校验文件"><span class="toc-text">1.2 Merkle Tree 校验文件</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-3-Merkle-Tree-在比特币中的应用"><span class="toc-text">1.3 Merkle Tree 在比特币中的应用</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-3-1-验证交易存在"><span class="toc-text">1.3.1  验证交易存在</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-3-2-验证交易不存在"><span class="toc-text">1.3.2 验证交易不存在</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#参考："><span class="toc-text">参考：</span></a></li></ol></li></ol>
+    </div>
+  </div><div class="post-content"><p>哈希树（hash tree；Merkle tree），在密码学及计算机科学中是一种树形数据结构，用于校验数据完整性和有效性，并且被广泛的应用于区块链网络中。</p>
+<a id="more"></a>
+
+<h1 id="Merkle-Tree"><a href="#Merkle-Tree" class="headerlink" title="Merkle Tree"></a>Merkle Tree</h1><blockquote>
+<p>哈希树（hash tree；Merkle tree），在密码学及计算机科学中是一种树形数据结构，每个叶节点均以数据块的哈希作为标签，而除了叶节点以外的节点则以其子节点标签的加密哈希作为标签 。哈希树能够高效、安全地验证大型数据结构的内容，是哈希链的推广形式 —— wikipedia</p>
+</blockquote>
+<p><img src="https://i.loli.net/2021/05/08/gJK6Eb3zBvVhPRc.png" alt="1920px-Hash_Tree.svg.png"><br><em>图来源维基百科[3]</em></p>
+<p>上面就是一个Merkle Tree的例子，叶子节点为数据块的hash值，每两个叶子节点拼接后的hash值作为其父节点的值，自底向上迭代后生成一个根节点，也形成一个完整的二叉树（满树）。</p>
+<p>这种数据结构可以用来验证数据是否被篡改过。</p>
+<h2 id="1-1-检验数据的有效性"><a href="#1-1-检验数据的有效性" class="headerlink" title="1.1 检验数据的有效性"></a>1.1 检验数据的有效性</h2><p>通常的下载场景中，例如我们想从<img src="https://www.pypy.org/download.html" alt="pypy">网站上下载一个软件 ,通常下载界面会提供一个校验和，这里是使用 <a href="https://zh.wikipedia.org/zh/SHA-2" target="_blank" rel="noopener">sha256</a> hash算法,如下图所示：</p>
+<p><img src="https://i.loli.net/2021/05/08/s1HamBISMGowyRJ.png" alt="1620406088-156824-image.png"></p>
+<p>那么当我们官方网站上或者从其他地方下载后，就可以利用同样的算法对文件进行hash计算，查看结果是否和网站给出的校验和一致，如果一致则说明文件未被篡改（哈希碰撞的概率很小忽略不计），否则被修改过。</p>
+<h2 id="1-2-Merkle-Tree-校验文件"><a href="#1-2-Merkle-Tree-校验文件" class="headerlink" title="1.2 Merkle Tree 校验文件"></a>1.2 Merkle Tree 校验文件</h2><p>既然通过简单的hash运算就可以判断文件的有效性，那么为什么还需要树的结构呢？</p>
+<p>因为在有些场景下，我们下载文件的时候通常是下载多个文件，或者一个文件的多个部分，而这些数据可能分散在不同的服务器上。也就意味着如果要比对文件的有效性，也就得从官方获得所有文件或者数据块的校验和，并且需要对文件进行一一匹配，这显然是很繁琐的。Merkel Tree 的作用就是将hash列表转换成树的形式，入上面描述所示，这样做了之后，对于多个文件，我们依然只使用一个hash，即根节点hash值。当用户下载完文件后，同样生成一个Merkle Tree，对比根节点即可。</p>
+<h2 id="1-3-Merkle-Tree-在比特币中的应用"><a href="#1-3-Merkle-Tree-在比特币中的应用" class="headerlink" title="1.3 Merkle Tree 在比特币中的应用"></a>1.3 Merkle Tree 在比特币中的应用</h2><h3 id="1-3-1-验证交易存在"><a href="#1-3-1-验证交易存在" class="headerlink" title="1.3.1  验证交易存在"></a>1.3.1  验证交易存在</h3><p>比特币网络中，所有的交易信息都被存放在区块中，而所有的区块信息非常大<br>（从<a href="https://btc.tokenview.com/cn" target="_blank" rel="noopener">比特币网络信息</a>可以看出，目前已经达到682532长度，大约427GB大小），保存这些完整信息的称为全节点，而普通用户往往不需要保存这些全局信息，可以通过向全节点查询信息即可，称为轻节点。</p>
+<p>而比特币网络是一个P2P网络，那么就可能存在恶意节点，如何保证轻节点查询的信息是准确的呢？首先我们可以从某个信任的节点上获取区块的头部摘要，这部分摘要包含了区块中由交易组成的Merkel Tree 根节点hash。当我们需要从其他全节点查询具体的交易时，全节点会返回交易数据，同时给出证明，包含该交易到根节点所在路径上的节点的哈希值。当用户拿到该笔交易后，通过计算即可得到根节点hash，与自己所得到的根节点hash比对即可。</p>
+<p><img src="https://i.loli.net/2021/05/08/4Gnf6H8uJkbxVhE.png" alt="1620459909-504617-image.png"><br><em>图来源《Master Bitcoin》[2]</em></p>
+<p>例如我们需要得到 $H_k$ 这笔交易，全节点必须给出 $H_{IJ}$, $H_{MNOP}$,$H_{ABCDEFGH}$, 即途中蓝色节点，用户拿到证明后，就可以依次计算得到图中虚线节点所在位置的hash，从而得到根节点hash，对比即可。</p>
+<p>也就是说在比特币网络中Merkle Tree 可以作为验证交易数据是否是可信的数据结构，这种方式的查找效率是$O(logn)$，这样即兼顾安全，又能保证效率。</p>
+<h3 id="1-3-2-验证交易不存在"><a href="#1-3-2-验证交易不存在" class="headerlink" title="1.3.2 验证交易不存在"></a>1.3.2 验证交易不存在</h3><p>上面提到了Merkle Tree 可以用于验证交易的存在性，那么节点是否可以证明某笔交易不存在某个区块中呢？<br>这个问题的提出可以参考 <a href="https://github.com/JoinMarket-Org/joinmarket/issues/693，" target="_blank" rel="noopener">https://github.com/JoinMarket-Org/joinmarket/issues/693，</a> 这里按下不表。</p>
+<p>他提出了一种 Sorted Merkle Tree，就是将叶子节点按照某种顺序进行排列，利用证明存在性的原理，证明某几个节点存在，而这几个节点的区间满足刚好包含不存在的节点的取值，从而说明节点的不存在性。</p>
+<p>原文没有给出证明，我在这儿简单说明下：由于验证节点的范围是包含不存在节点的，假设该节点本身存在在树中，那么返回的路径中也必定包含该节点的信息，也就是说验证节点之间就一定不相邻了，那么想要伪造必须碰撞hash，来使得和真实根节点保持一致，显然这是很难做到的。</p>
+<p>具体参考下面的例子：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">         R</span><br><span class="line">      &#x2F;       \</span><br><span class="line">    N_5        N_6</span><br><span class="line">   &#x2F; \         &#x2F;   \</span><br><span class="line"> N_1  N_2     N_3   N_4</span><br><span class="line"> &#x2F; \   &#x2F; \    &#x2F; \  &#x2F;  \</span><br><span class="line">0   2 3   4   6  7 8   9</span><br></pre></td></tr></table></figure>
+<p>如果想要证明1不存在，那么返回0和2的存在性证明，因为 $0&lt;1&lt;2$，在例如证明5不存在，是不是返回${3,4}$ 和 $6,7$这几个节点的存在性证明即可呢？答案是不可以，因为如果返回这两个区间，客户在验证的时候会把$N2$和$N4$当作相邻的节点，来计算上层hash，显然和真实的情况不符，从而得到错误的根节点hash，验证失败。</p>
+<h2 id="参考："><a href="#参考：" class="headerlink" title="参考："></a>参考：</h2><p>[1]. 《Sorted Merkle Tree as Solution to Issue #693》. Gist. 见于 2021年5月8日. <a href="https://gist.github.com/chris-belcher/eb9abe417d74a7b5f20aabe6bff10de0" target="_blank" rel="noopener">https://gist.github.com/chris-belcher/eb9abe417d74a7b5f20aabe6bff10de0</a></p>
+<p>[2]. GitHub. 《Bitcoinbook/Bitcoinbook》. 见于 2021年5月8日. <a href="https://github.com/bitcoinbook/bitcoinbook" target="_blank" rel="noopener">https://github.com/bitcoinbook/bitcoinbook</a>.</p>
+<p>[3].《Merkle Tree》. 收入 Wikipedia, 2021年5月6日. <a href="https://en.wikipedia.org/w/index.php?title=Merkle_tree&amp;oldid=1021824892" target="_blank" rel="noopener">https://en.wikipedia.org/w/index.php?title=Merkle_tree&amp;oldid=1021824892</a>.</p>
+
+      </div>
+      <div class="post-copyright">
+    <p class="copyright-item">
+      <span>Author: </span>
+      <a href="http://ehds.github.io">DongSheng</a>
+    </p>
+    <p class="copyright-item">
+      <span>Link: </span>
+      <a href="http://ehds.github.io/2021/05/08/Merkle-tree-in-bitcoin/">http://ehds.github.io/2021/05/08/Merkle-tree-in-bitcoin/</a>
+    </p>
+    <p class="copyright-item">
+      <span>License: </span><a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/" target="_blank">知识共享署名-非商业性使用 4.0 国际许可协议</a>
+    </p>
+  </div>
+      <footer class="post-footer">
+        <div class="post-tags">
+            <a href="/tags/%E6%AF%94%E7%89%B9%E5%B8%81/">比特币</a>
+            <a href="/tags/%E5%8C%BA%E5%9D%97%E9%93%BE/">区块链</a>
+            <a href="/tags/Merkle-Tree/">Merkle Tree</a>
+            </div>
+        
+        <nav class="post-nav"><a class="prev" href="/2021/05/11/raft-single-peer-change/">
+        <i class="iconfont icon-left"></i>
+        <span class="prev-text nav-default">Raft 进行单节点变换时遇到的问题</span>
+        <span class="prev-text nav-mobile">Prev</span>
+      </a>
+    <a class="next" href="/2021/04/17/tidb-mini-survey/">
+        <span class="next-text nav-default">TiDB 简单介绍（部分感兴趣点）</span>
+        <span class="prev-text nav-mobile">Next</span>
+        <i class="iconfont icon-right"></i>
+      </a>
+    </nav></footer>
+    </article></div><div class="comments" id="comments"><div id="gitalk-container"></div>
+    </div></div>
+      </main>
+
+      <footer id="footer" class="footer"><div class="social-links"><a href="mailto:ehds@qq.com" class="iconfont icon-email" title="email"></a>
+        <a href="https://github.com/ehds" target="_blank" rel="noopener" class="iconfont icon-github" title="github"></a>
+        <a href="/atom.xml" class="iconfont icon-rss" title="rss"></a>
+    </div><div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a>
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    Theme - 
+    <a class="theme-link" href="https://github.com/ahonn/hexo-theme-even" target="_blank" rel="noopener">Even</a>
+  </span>
+
+  <span class="copyright-year">&copy;2017 - 2022<span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">DongSheng</span>
+  </span>
+</div>
+</footer>
+
+      <div class="back-to-top" id="back-to-top">
+        <i class="iconfont icon-up"></i>
+      </div>
+    </div>
+<script src="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.css"/>
+
+
+<script src="//cdn.jsdelivr.net/npm/js-md5@0.7.3/src/md5.min.js"></script>
+
+<script>
+  var gitalk = new Gitalk({
+    clientID: 'b75057216cc9401f28a0',
+    clientSecret: '6089f1aac89dc7f55aa1cceab307a61e85399bfc',
+    repo: 'ehds.github.io',
+    owner: 'ehds',
+    admin: ['ehds'],
+    id: md5(location.pathname),
+    
+      language: 'en',
+    
+    distractionFreeMode: 'true'
+  });
+  gitalk.render('gitalk-container');
+</script><script type="text/javascript" src="/lib/jquery/jquery.min.js"></script>
+  <script type="text/javascript" src="/lib/slideout/slideout.js"></script>
+  <script type="text/javascript" src="/lib/fancybox/jquery.fancybox.pack.js"></script>
+  <script type="text/javascript" src="/js/src/even.js?v=2.11.0"></script>
+</body>
+</html>

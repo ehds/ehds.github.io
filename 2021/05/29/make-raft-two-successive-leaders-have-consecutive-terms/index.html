@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head><meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+<meta name="description" content="如何使得 raft 算法相继两个leader 的 term 连续"/><meta name="keywords" content="RAFT, Ehds" /><link rel="alternate" href="/atom.xml" title="Ehds"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=2.11.0" />
+<link rel="canonical" href="http://ehds.github.io/2021/05/29/make-raft-two-successive-leaders-have-consecutive-terms/"/>
+
+<link rel="stylesheet" type="text/css" href="/lib/fancybox/jquery.fancybox.css" /><script type="text/x-mathjax-config">
+    MathJax.Hub.Config({ tex2jax: { inlineMath: [['$','$'], ['\\(','\\)']] } });
+  </script>
+  <script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+<link rel="stylesheet" type="text/css" href="/css/style.css?v=2.11.0" />
+
+<script id="baidu_push">
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+<script>
+  window.config = {"leancloud":{"app_id":null,"app_key":null},"toc":true,"fancybox":true,"pjax":"","latex":true};
+</script>
+
+    <title>如何使得 raft 算法相继两个leader 的 term 连续 - Ehds</title>
+  <meta name="generator" content="Hexo 4.2.1"><link rel="alternate" href="/atom.xml" title="Ehds" type="application/atom+xml">
+</head>
+
+  <body><div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/." class="logo">Ehds</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list"><a href="/">
+        <li class="mobile-menu-item">Home
+          </li>
+      </a><a href="/archives/">
+        <li class="mobile-menu-item">Archives
+          </li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">Tags
+          </li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">Categories
+          </li>
+      </a><a href="/about/">
+        <li class="mobile-menu-item">About
+          </li>
+      </a></ul>
+</nav>
+<div class="container" id="mobile-panel">
+      <header id="header" class="header"><div class="logo-wrapper">
+  <a href="/." class="logo">Ehds</a>
+</div>
+
+<nav class="site-navbar"><ul id="menu" class="menu"><li class="menu-item">
+          <a class="menu-item-link" href="/">
+            Home
+            </a>
+        </li>
+      <li class="menu-item">
+          <a class="menu-item-link" href="/archives/">
+            Archives
+            </a>
+        </li>
+      <li class="menu-item">
+          <a class="menu-item-link" href="/tags/">
+            Tags
+            </a>
+        </li>
+      <li class="menu-item">
+          <a class="menu-item-link" href="/categories/">
+            Categories
+            </a>
+        </li>
+      <li class="menu-item">
+          <a class="menu-item-link" href="/about/">
+            About
+            </a>
+        </li>
+      </ul></nav>
+</header>
+
+      <main id="main" class="main">
+        <div class="content-wrapper">
+          <div id="content" class="content"><article class="post">
+    <header class="post-header">
+      <h1 class="post-title">如何使得 raft 算法相继两个leader 的 term 连续
+        </h1>
+
+      <div class="post-meta">
+        <span class="post-time">
+          2021-05-29
+        </span><span class="post-category">
+            <a href="/categories/%E5%88%86%E5%B8%83%E5%BC%8F/">分布式</a>
+            </span>
+        </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+    <h2 class="post-toc-title">Contents</h2>
+    <div class="post-toc-content">
+      <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#加入一个新的timeout"><span class="toc-text">加入一个新的timeout</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#新的投票机制"><span class="toc-text">新的投票机制</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#正确性证明"><span class="toc-text">正确性证明</span></a></li></ol>
+    </div>
+  </div><div class="post-content"><p>我们思考一个有趣的问题，如何让<strong>每个term都选举出一个唯一合法的leader</strong>?</p>
+<a id="more"></a>
+<p>在raft算法中，为了能让选举能够顺利执行，规定了每个节点只能给同个term的一个node投票，candidate如果投票失败，会将自身的term+1, 高的term的优先级会比低的term高，也就是说高term可以强制让低的term的选举作废。这种规定则是为了能够顺利的选举出leader所制定的规则。这样会有一个<strong>允许发生的现象</strong>就是可能导致某个term中没有选举出leader。</p>
+<p>那么如何让<strong>每个term都选举出一个唯一合法的leader</strong>? 当然可以完全没有这个要求？这里只是就这个问题作出探索，不涉及其他诸如： <code>每个term都选举出leader的用途在哪？</code>，<code>会不会对raft的性能造成影响</code>等对正确性无关的问题。</p>
+<p>下面是设想的一种具体做法，大家可以讨论一下：</p>
+<h3 id="加入一个新的timeout"><a href="#加入一个新的timeout" class="headerlink" title="加入一个新的timeout"></a>加入一个新的timeout</h3><p>在raft中有多个timeout，下面是一个经典的raft角色变化示意图</p>
+<p><img src="https://i.loli.net/2021/05/29/iTSU21Qv3LyANjk.png" alt="1622082793-865495-image.png"></p>
+<p><em>图来源于论文</em></p>
+<p>新增加一个的timeout称之为 <code>on_vote_timeout</code>, 作用是限制投票行为的发生，也就是说当一个节点给另外的一个节点投票之后，此timeoute生效，在这个timeout时间内，不能够其他任何人投票，即使term比当前投票的人高。也可以看作是一个lease：<code>on_vote_lease</code>,因为其行为可能更像是lease，无论怎么命名，作用如上所述。</p>
+<p>那么第二个问题就是这个timeout的时长设定为多少？规定 <code>on_vote_timeout</code> &lt; election_timeout。 因为follower每次经过election_timeout之后，会转变为candidate，candidate会先给自身投一票，那么如果<code>on_vote_timeout</code> = election_timeout 那么<code>on_vote_timeout</code>就没有意义了，只需要一个election_timeout就可以了。那如果<code>on_vote_timeout</code> &gt; election_timeout，也不行，如果是这样的话election_timeout之后，还不能给自身投票，但是却又发起了新一轮选举，会造成问题。</p>
+<h3 id="新的投票机制"><a href="#新的投票机制" class="headerlink" title="新的投票机制"></a>新的投票机制</h3><p>在引入上面的<code>on_vote_timeout</code>之后，需要对原始的投票机制作出修改。具体规则如下：</p>
+<ol>
+<li><code>follower</code>转变为<code>candinate</code>时，先查看当前日志上一个<code>leader</code>的$last\_leader\_term$，并且设置新的term $new\_term = last\_leader\_term+1$, 并一直维持这个<code>new_term</code>作为投票的请求的<code>term</code>，直到这个<code>new_term</code>有新的<code>leader</code>产生（可以是自己，也可以是其他节点）。发起<code>request_vote</code>请求，和原始论文描述一致。</li>
+<li>接受到投票请求的节点，会先判断自身的<code>on_vote_timeout</code>是否过期，如果过期，则可以投票。判断<code>term</code>的规则是当前<code>term</code>必须比当前节点已知的leader的term新，并且只能是$request\_term = last\_leader\_term+1$。这里值得注意的是判断的是上一个成功当选leader的term，不是和自己本身的term。<br>然后判断日志的规则和原始论文一致，满足上述情况，则返回<code>true</code>，开启<code>on_vote_timeout</code>,否则返回<code>false</code>。</li>
+<li>当<code>candidate</code>收到了大多数的投票，则成为<code>on_leader</code>，此时发送一个<code>become_leader</code>日志（和noop日志类似），当该日志被<code>committed</code>后，此节点成为<code>leader</code>并开始工作。这里注意的一点是，其他节点在收到日志时（append_entries请求)会判断该日志的term，以及发送者是否是自己投票的节点。</li>
+</ol>
+<h3 id="正确性证明"><a href="#正确性证明" class="headerlink" title="正确性证明"></a>正确性证明</h3><p><strong>定理一</strong>：一个<code>term</code>下只会选出一个<code>leader</code><br>首先按照上述的选举机制一个节点得到大多数投票后，如果在所有的投给自己票的节点的<code>on_vote_timeout</code>的最先结束的那个时间点前，将<code>become_leader</code>日志committed，那么一定只会有一个leader，也就是满足论文的 <strong>Election Safety: at most one leader can be elected in a giventerm.§5.2</strong></p>
+<p>证明:<br>假设一个<code>term</code>下有两个<code>leader</code>，也就是说这两个leader都将<code>become_leader</code>的日志复制到了大多数节点，那么这两个大多数节点集合的并集不为空集，取交集中的一个节点，也就是说它给这两个leader都投过票，并且保存了他们的<code>become_leader</code>日志，但是由于投票的原则，接受<code>append_entries</code>需要判断是否是投票节点的leader，所以必定会拒绝其中一个日志，所以假设条件不成立。证明完毕。</p>
+<p><strong>定理二</strong>：相继两个<code>leader</code>之间的<code>term</code>是严格连续递增的<br>同样可以使用反证法，假设两个相继<code>leader</code>之间的<code>term</code>是不连续的，设前一个<code>leader</code>的<code>term</code>为$m$，后一个<code>leader</code>的<code>term</code>为$n$, 即 $n &gt; m+1$, 那么必定存在一个$k$ = $n+1$满足$n&lt;k&lt;m$。根据条件在<code>term</code>为$k$的阶段是不存在<code>leader</code>的，也就是带有日志的<code>term</code>为$k$的日志并不存在于大多数节点中。那么按照投票原则，<code>term</code>为$m$的leader能够被选出来，必定存在一个<code>term</code>为 $m-1$的leader，以此类推，必定存在一个$k = n+1$ 的<code>leader</code>，与假设冲突。证明完毕。</p>
+<p>上述说明了一种如何选举出没有<code>leader</code>的<code>term</code>存在空洞的选举方法，并给出了一定的证明，可能存在一定的错误，欢迎大家讨论。</p>
+
+      </div>
+      <div class="post-copyright">
+    <p class="copyright-item">
+      <span>Author: </span>
+      <a href="http://ehds.github.io">DongSheng</a>
+    </p>
+    <p class="copyright-item">
+      <span>Link: </span>
+      <a href="http://ehds.github.io/2021/05/29/make-raft-two-successive-leaders-have-consecutive-terms/">http://ehds.github.io/2021/05/29/make-raft-two-successive-leaders-have-consecutive-terms/</a>
+    </p>
+    <p class="copyright-item">
+      <span>License: </span><a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/" target="_blank">知识共享署名-非商业性使用 4.0 国际许可协议</a>
+    </p>
+  </div>
+      <footer class="post-footer">
+        <div class="post-tags">
+            <a href="/tags/RAFT/">RAFT</a>
+            </div>
+        
+        <nav class="post-nav"><a class="prev" href="/2021/06/13/silt-entropy-encoding-explain/">
+        <i class="iconfont icon-left"></i>
+        <span class="prev-text nav-default">SILT 论文中关于 Entropy coding 的解释</span>
+        <span class="prev-text nav-mobile">Prev</span>
+      </a>
+    <a class="next" href="/2021/05/11/raft-single-peer-change/">
+        <span class="next-text nav-default">Raft 进行单节点变换时遇到的问题</span>
+        <span class="prev-text nav-mobile">Next</span>
+        <i class="iconfont icon-right"></i>
+      </a>
+    </nav></footer>
+    </article></div><div class="comments" id="comments"><div id="gitalk-container"></div>
+    </div></div>
+      </main>
+
+      <footer id="footer" class="footer"><div class="social-links"><a href="mailto:ehds@qq.com" class="iconfont icon-email" title="email"></a>
+        <a href="https://github.com/ehds" target="_blank" rel="noopener" class="iconfont icon-github" title="github"></a>
+        <a href="/atom.xml" class="iconfont icon-rss" title="rss"></a>
+    </div><div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a>
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    Theme - 
+    <a class="theme-link" href="https://github.com/ahonn/hexo-theme-even" target="_blank" rel="noopener">Even</a>
+  </span>
+
+  <span class="copyright-year">&copy;2017 - 2022<span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">DongSheng</span>
+  </span>
+</div>
+</footer>
+
+      <div class="back-to-top" id="back-to-top">
+        <i class="iconfont icon-up"></i>
+      </div>
+    </div>
+<script src="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.css"/>
+
+
+<script src="//cdn.jsdelivr.net/npm/js-md5@0.7.3/src/md5.min.js"></script>
+
+<script>
+  var gitalk = new Gitalk({
+    clientID: 'b75057216cc9401f28a0',
+    clientSecret: '6089f1aac89dc7f55aa1cceab307a61e85399bfc',
+    repo: 'ehds.github.io',
+    owner: 'ehds',
+    admin: ['ehds'],
+    id: md5(location.pathname),
+    
+      language: 'en',
+    
+    distractionFreeMode: 'true'
+  });
+  gitalk.render('gitalk-container');
+</script><script type="text/javascript" src="/lib/jquery/jquery.min.js"></script>
+  <script type="text/javascript" src="/lib/slideout/slideout.js"></script>
+  <script type="text/javascript" src="/lib/fancybox/jquery.fancybox.pack.js"></script>
+  <script type="text/javascript" src="/js/src/even.js?v=2.11.0"></script>
+</body>
+</html>

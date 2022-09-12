@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head><meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+<meta name="description" content="用 C 语言画科赫雪花"/><meta name="keywords" content="c/c++, 科赫雪花, c程序设计, Ehds" /><link rel="alternate" href="/atom.xml" title="Ehds"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=2.11.0" />
+<link rel="canonical" href="http://ehds.github.io/2017/12/28/用-C-语言画科赫雪花/"/>
+
+<link rel="stylesheet" type="text/css" href="/lib/fancybox/jquery.fancybox.css" /><script type="text/x-mathjax-config">
+    MathJax.Hub.Config({ tex2jax: { inlineMath: [['$','$'], ['\\(','\\)']] } });
+  </script>
+  <script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+<link rel="stylesheet" type="text/css" href="/css/style.css?v=2.11.0" />
+
+<script id="baidu_push">
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+<script>
+  window.config = {"leancloud":{"app_id":null,"app_key":null},"toc":true,"fancybox":true,"pjax":"","latex":true};
+</script>
+
+    <title>用 C 语言画科赫雪花 - Ehds</title>
+  <meta name="generator" content="Hexo 4.2.1"><link rel="alternate" href="/atom.xml" title="Ehds" type="application/atom+xml">
+</head>
+
+  <body><div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/." class="logo">Ehds</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list"><a href="/">
+        <li class="mobile-menu-item">Home
+          </li>
+      </a><a href="/archives/">
+        <li class="mobile-menu-item">Archives
+          </li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">Tags
+          </li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">Categories
+          </li>
+      </a><a href="/about/">
+        <li class="mobile-menu-item">About
+          </li>
+      </a></ul>
+</nav>
+<div class="container" id="mobile-panel">
+      <header id="header" class="header"><div class="logo-wrapper">
+  <a href="/." class="logo">Ehds</a>
+</div>
+
+<nav class="site-navbar"><ul id="menu" class="menu"><li class="menu-item">
+          <a class="menu-item-link" href="/">
+            Home
+            </a>
+        </li>
+      <li class="menu-item">
+          <a class="menu-item-link" href="/archives/">
+            Archives
+            </a>
+        </li>
+      <li class="menu-item">
+          <a class="menu-item-link" href="/tags/">
+            Tags
+            </a>
+        </li>
+      <li class="menu-item">
+          <a class="menu-item-link" href="/categories/">
+            Categories
+            </a>
+        </li>
+      <li class="menu-item">
+          <a class="menu-item-link" href="/about/">
+            About
+            </a>
+        </li>
+      </ul></nav>
+</header>
+
+      <main id="main" class="main">
+        <div class="content-wrapper">
+          <div id="content" class="content"><article class="post">
+    <header class="post-header">
+      <h1 class="post-title">用 C 语言画科赫雪花
+        </h1>
+
+      <div class="post-meta">
+        <span class="post-time">
+          2017-12-28
+        </span><span class="post-category">
+            <a href="/categories/%E7%BC%96%E7%A8%8B/">编程</a>
+            </span>
+        </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+    <h2 class="post-toc-title">Contents</h2>
+    <div class="post-toc-content">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-科赫雪花和科赫曲线"><span class="toc-text">1. 科赫雪花和科赫曲线</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-用-ASCII-字符绘画"><span class="toc-text">2. 用 ASCII 字符绘画</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-用-C-语言实现科赫曲线"><span class="toc-text">3. 用 C 语言实现科赫曲线</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-实现科赫雪花"><span class="toc-text">4. 实现科赫雪花</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#输出"><span class="toc-text">输出</span></a></li></ol>
+    </div>
+  </div><div class="post-content"><p><img src="http://i63.tinypic.com/swdcic.jpg" alt=""></p>
+<a id="more"></a>
+<h2 id="1-科赫雪花和科赫曲线"><a href="#1-科赫雪花和科赫曲线" class="headerlink" title="1. 科赫雪花和科赫曲线"></a>1. 科赫雪花和科赫曲线</h2><p>科赫曲线（Koch curve）是一个简单的分形（fractal）图形。瑞典数学家海里格·冯·科赫（Helge von Koch）于 1904 年的论文 [1] 中提及科赫曲线的构造方法。<br>给定一直线线段，把它等分三段，加入一个等边三角形，以三段的中间一段为底对齐，再去除该段线段。然后，对每个新线段重复进行上述步骤，就能形成科赫曲线：</p>
+<p><img src="http://i63.tinypic.com/2ushpp5.jpg" alt=""></p>
+<p>当<br>$$<br>n \rightarrow \infty<br>$$</p>
+<p>，科赫曲线的长度也是无穷的。</p>
+<p>如果画 3 条科赫曲线，每次旋转 120 度，就能得到科赫雪花（Koch snowflake）：</p>
+<p><img src="http://i65.tinypic.com/2q184l1.jpg" alt=""></p>
+<h2 id="2-用-ASCII-字符绘画"><a href="#2-用-ASCII-字符绘画" class="headerlink" title="2. 用 ASCII 字符绘画"></a>2. 用 ASCII 字符绘画</h2><p>我们可以用斜线 /、反斜线 \、下划线 _ 和空格这 4 个 ASCII 字符来绘画这个图形：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">n&#x3D;0</span><br><span class="line">  </span><br><span class="line">__</span><br><span class="line">  </span><br><span class="line">n&#x3D;1</span><br><span class="line">      </span><br><span class="line">__&#x2F;\__</span><br><span class="line">      </span><br><span class="line">n&#x3D;2</span><br><span class="line">                  </span><br><span class="line">      __&#x2F;\__      </span><br><span class="line">      \    &#x2F;      </span><br><span class="line">__&#x2F;\__&#x2F;    \__&#x2F;\__</span><br></pre></td></tr></table></figure>
+<p>但有些情况我们需要在一个字符中画下划线和斜线，例如 n = 3 的时候：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">n&#x3D;3</span><br><span class="line"></span><br><span class="line">                        __&#x2F;\__                        </span><br><span class="line">                        \    &#x2F;                        </span><br><span class="line">                  __&#x2F;\__&#x2F;    \__&#x2F;\__                  </span><br><span class="line">                  \                &#x2F;                  </span><br><span class="line">           这里 -&gt; &#x2F;_              _\ &lt;- 这里 </span><br><span class="line">                    \            &#x2F;                    </span><br><span class="line">      __&#x2F;\__      __&#x2F;            \__      __&#x2F;\__      </span><br><span class="line">      \    &#x2F;      \                &#x2F;      \    &#x2F;      </span><br><span class="line">__&#x2F;\__&#x2F;    \__&#x2F;\__&#x2F;                \__&#x2F;\__&#x2F;    \__&#x2F;\__</span><br></pre></td></tr></table></figure>
+
+<p>这时候我们可以选择只画斜线、反斜线。</p>
+<h2 id="3-用-C-语言实现科赫曲线"><a href="#3-用-C-语言实现科赫曲线" class="headerlink" title="3. 用 C 语言实现科赫曲线"></a>3. 用 C 语言实现科赫曲线</h2><p>我们创建一个字符数组 image 作为画布，用于存储绘画的中间结果，最后再把数组打印出来。数组的大小为画布宽长之积 w * h。</p>
+<p>设坐标系统是 x 向右、y 向下，并定义字符的左下角为坐标。例如，画笔从 (x, y) 之处往右画，便赋值 image[y * w + x] = ‘_’ ，并把 x 增 1。</p>
+<p>我们也定义 6 个方向，0 代表向右，1代表右上，2 代表左上等。注意水平方向（0 和 3）需要画两个下划线，其他方向只画一个字符。</p>
+<p>每次调用 KochCurve(n, dir) 函数，表示我们要从当前位置 (x, y) 向 dir 方向绘画一条 n 阶科赫曲线。那么要画一条 n 阶科赫曲线，其实就只需要根据所需方向画 4 条 n - 1 阶科赫曲线。直到 n = 0，一条 0 阶科赫曲线就是一条直线，我们届时只需按 dir 用字符画一条直线。</p>
+<p>完整代码如下：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdlib.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;string.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">static</span> <span class="keyword">char</span>* <span class="built_in">image</span>;</span><br><span class="line"><span class="keyword">static</span> <span class="keyword">int</span> x, y, w, h;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="title">Put</span><span class="params">(<span class="keyword">int</span> i, <span class="keyword">int</span> j, <span class="keyword">char</span> c)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">char</span> *p = <span class="built_in">image</span> + j * w + i;</span><br><span class="line">    <span class="keyword">if</span> (*p == <span class="string">' '</span> || *p == <span class="string">'_'</span>) <span class="comment">// _ can be overridden by / or \.</span></span><br><span class="line">        *p = c;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="title">KochCurve</span><span class="params">(<span class="keyword">int</span> n, <span class="keyword">int</span> dir)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (n == <span class="number">0</span>)</span><br><span class="line">        <span class="keyword">switch</span> (dir % <span class="number">6</span>) &#123;</span><br><span class="line">            <span class="keyword">case</span> <span class="number">0</span>: Put(x++, y  , <span class="string">'_'</span> );</span><br><span class="line">                    Put(x++, y,   <span class="string">'_'</span> ); <span class="keyword">break</span>;</span><br><span class="line">            <span class="keyword">case</span> <span class="number">1</span>: Put(x++, y--, <span class="string">'/'</span> ); <span class="keyword">break</span>;</span><br><span class="line">            <span class="keyword">case</span> <span class="number">2</span>: Put(--x, y--, <span class="string">'\\'</span>); <span class="keyword">break</span>;</span><br><span class="line">            <span class="keyword">case</span> <span class="number">3</span>: Put(--x,   y, <span class="string">'_'</span> );</span><br><span class="line">                    Put(--x,   y, <span class="string">'_'</span> ); <span class="keyword">break</span>;</span><br><span class="line">            <span class="keyword">case</span> <span class="number">4</span>: Put(--x, ++y, <span class="string">'/'</span> ); <span class="keyword">break</span>;</span><br><span class="line">            <span class="keyword">case</span> <span class="number">5</span>: Put(x++, ++y, <span class="string">'\\'</span>); <span class="keyword">break</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    <span class="keyword">else</span> &#123;</span><br><span class="line">        KochCurve(n - <span class="number">1</span>, dir    );</span><br><span class="line">        KochCurve(n - <span class="number">1</span>, dir + <span class="number">1</span>);</span><br><span class="line">        KochCurve(n - <span class="number">1</span>, dir + <span class="number">5</span>);</span><br><span class="line">        KochCurve(n - <span class="number">1</span>, dir    );</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    w = <span class="number">2</span>;</span><br><span class="line">    h = <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> n = <span class="number">0</span>; n &lt; <span class="number">4</span>; n++) &#123;</span><br><span class="line">        <span class="built_in">image</span> = (<span class="keyword">char</span>*)<span class="built_in">malloc</span>(w * h);</span><br><span class="line">        <span class="built_in">memset</span>(<span class="built_in">image</span>, <span class="string">' '</span>, w * h);</span><br><span class="line"></span><br><span class="line">        x = <span class="number">0</span>;</span><br><span class="line">        y = h - <span class="number">1</span>;</span><br><span class="line">        KochCurve(n, <span class="number">0</span>);</span><br><span class="line"></span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">"\nn=%d\n\n"</span>, n);</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">0</span>; j &lt; h; j++) &#123;</span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; w; i++)</span><br><span class="line">                <span class="built_in">putchar</span>(<span class="built_in">image</span>[j * w + i]);</span><br><span class="line">            <span class="built_in">putchar</span>(<span class="string">'\n'</span>);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        w *= <span class="number">3</span>;</span><br><span class="line">        h = n == <span class="number">0</span> ? <span class="number">1</span> : h * <span class="number">3</span>;</span><br><span class="line">        <span class="built_in">free</span>(<span class="built_in">image</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="4-实现科赫雪花"><a href="#4-实现科赫雪花" class="headerlink" title="4. 实现科赫雪花"></a>4. 实现科赫雪花</h2><p>科赫雪花仅仅是由 3 科赫曲线组成。我们只需改一下 main()，把画布变大一点，以及在合适的起始坐标画 3 条科赫曲线：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    w = <span class="number">2</span>;</span><br><span class="line">    h = <span class="number">4</span>;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> n = <span class="number">0</span>; n &lt; <span class="number">4</span>; n++) &#123;</span><br><span class="line">        <span class="built_in">image</span> = (<span class="keyword">char</span>*)<span class="built_in">malloc</span>(w * h);</span><br><span class="line">        <span class="built_in">memset</span>(<span class="built_in">image</span>, <span class="string">' '</span>, w * h);</span><br><span class="line"></span><br><span class="line">        x = <span class="number">0</span>;</span><br><span class="line">        y = h / <span class="number">4</span> - <span class="number">1</span>;</span><br><span class="line">        KochCurve(n, <span class="number">0</span>);</span><br><span class="line">        KochCurve(n, <span class="number">4</span>);</span><br><span class="line">        KochCurve(n, <span class="number">2</span>);</span><br><span class="line"></span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">"\nn=%d\n\n"</span>, n);</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">0</span>; j &lt; h; j++) &#123;</span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; w; i++)</span><br><span class="line">                <span class="built_in">putchar</span>(<span class="built_in">image</span>[j * w + i]);</span><br><span class="line">            <span class="built_in">putchar</span>(<span class="string">'\n'</span>);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        w *= <span class="number">3</span>;</span><br><span class="line">        h = n == <span class="number">0</span> ? <span class="number">4</span> : h * <span class="number">3</span>;</span><br><span class="line">        <span class="built_in">free</span>(<span class="built_in">image</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="输出"><a href="#输出" class="headerlink" title="输出"></a>输出</h2><p>（只展示 n = 3）：<br><img src="http://i66.tinypic.com/2yphh0y.jpg" alt=""></p>
+
+      </div>
+      <div class="post-copyright">
+    <p class="copyright-item">
+      <span>Author: </span>
+      <a href="http://ehds.github.io">DongSheng</a>
+    </p>
+    <p class="copyright-item">
+      <span>Link: </span>
+      <a href="http://ehds.github.io/2017/12/28/%E7%94%A8-C-%E8%AF%AD%E8%A8%80%E7%94%BB%E7%A7%91%E8%B5%AB%E9%9B%AA%E8%8A%B1/">http://ehds.github.io/2017/12/28/%E7%94%A8-C-%E8%AF%AD%E8%A8%80%E7%94%BB%E7%A7%91%E8%B5%AB%E9%9B%AA%E8%8A%B1/</a>
+    </p>
+    <p class="copyright-item">
+      <span>License: </span><a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/" target="_blank">知识共享署名-非商业性使用 4.0 国际许可协议</a>
+    </p>
+  </div>
+      <footer class="post-footer">
+        <div class="post-tags">
+            <a href="/tags/c-c/">c/c++</a>
+            <a href="/tags/%E7%A7%91%E8%B5%AB%E9%9B%AA%E8%8A%B1/">科赫雪花</a>
+            <a href="/tags/c%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1/">c程序设计</a>
+            </div>
+        
+        <nav class="post-nav"><a class="prev" href="/2017/12/28/%E6%9C%80%E5%B0%8F%E5%9B%9E%E6%96%87%E6%95%B0%E4%B9%8B%E5%92%8C/">
+        <i class="iconfont icon-left"></i>
+        <span class="prev-text nav-default">最小回文数之和</span>
+        <span class="prev-text nav-mobile">Prev</span>
+      </a>
+    <a class="next" href="/2017/08/26/coursera%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E4%BD%9C%E4%B8%9A/">
+        <span class="next-text nav-default">coursea机器学习作业</span>
+        <span class="prev-text nav-mobile">Next</span>
+        <i class="iconfont icon-right"></i>
+      </a>
+    </nav></footer>
+    </article></div><div class="comments" id="comments"><div id="gitalk-container"></div>
+    </div></div>
+      </main>
+
+      <footer id="footer" class="footer"><div class="social-links"><a href="mailto:ehds@qq.com" class="iconfont icon-email" title="email"></a>
+        <a href="https://github.com/ehds" target="_blank" rel="noopener" class="iconfont icon-github" title="github"></a>
+        <a href="/atom.xml" class="iconfont icon-rss" title="rss"></a>
+    </div><div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a>
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    Theme - 
+    <a class="theme-link" href="https://github.com/ahonn/hexo-theme-even" target="_blank" rel="noopener">Even</a>
+  </span>
+
+  <span class="copyright-year">&copy;2017 - 2022<span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">DongSheng</span>
+  </span>
+</div>
+</footer>
+
+      <div class="back-to-top" id="back-to-top">
+        <i class="iconfont icon-up"></i>
+      </div>
+    </div>
+<script src="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.css"/>
+
+
+<script src="//cdn.jsdelivr.net/npm/js-md5@0.7.3/src/md5.min.js"></script>
+
+<script>
+  var gitalk = new Gitalk({
+    clientID: 'b75057216cc9401f28a0',
+    clientSecret: '6089f1aac89dc7f55aa1cceab307a61e85399bfc',
+    repo: 'ehds.github.io',
+    owner: 'ehds',
+    admin: ['ehds'],
+    id: md5(location.pathname),
+    
+      language: 'en',
+    
+    distractionFreeMode: 'true'
+  });
+  gitalk.render('gitalk-container');
+</script><script type="text/javascript" src="/lib/jquery/jquery.min.js"></script>
+  <script type="text/javascript" src="/lib/slideout/slideout.js"></script>
+  <script type="text/javascript" src="/lib/fancybox/jquery.fancybox.pack.js"></script>
+  <script type="text/javascript" src="/js/src/even.js?v=2.11.0"></script>
+</body>
+</html>

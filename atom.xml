@@ -1,0 +1,464 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>Ehds</title>
+  <icon>http://ehds.github.io/icon.png</icon>
+  
+  <link href="http://ehds.github.io/atom.xml" rel="self"/>
+  
+  <link href="http://ehds.github.io/"/>
+  <updated>2022-09-12T09:06:19.336Z</updated>
+  <id>http://ehds.github.io/</id>
+  
+  <author>
+    <name>DongSheng</name>
+    
+  </author>
+  
+  <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>bthread调度策略探索</title>
+    <link href="http://ehds.github.io/2021/07/20/bthread_schedule/"/>
+    <id>http://ehds.github.io/2021/07/20/bthread_schedule/</id>
+    <published>2021-07-20T21:22:36.000Z</published>
+    <updated>2022-09-12T09:06:19.336Z</updated>
+    
+    
+    <summary type="html">&lt;p&gt;&lt;a href=&quot;https://github.com/brpc/brpc/tree/master/src/bthread&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;bthread&lt;/a&gt;是brpc使用的M:N线程库，目的是在提高程序的并发度的同时，降低编码难度，并在核数日益增多的CPU上提供更好的scalability和cache locality。&lt;/p&gt;</summary>
+    
+    
+    
+    <category term="编程" scheme="http://ehds.github.io/categories/%E7%BC%96%E7%A8%8B/"/>
+    
+    
+    <category term="brpc" scheme="http://ehds.github.io/tags/brpc/"/>
+    
+    <category term="bthread" scheme="http://ehds.github.io/tags/bthread/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>SILT 论文中关于 Entropy coding 的解释</title>
+    <link href="http://ehds.github.io/2021/06/13/silt-entropy-encoding-explain/"/>
+    <id>http://ehds.github.io/2021/06/13/silt-entropy-encoding-explain/</id>
+    <published>2021-06-13T08:32:36.000Z</published>
+    <updated>2022-09-12T09:06:19.336Z</updated>
+    
+    
+    <summary type="html">&lt;p&gt;SILT 论文中关于 Entropy coding 的解释&lt;/p&gt;</summary>
+    
+    
+    
+    <category term="论文阅读" scheme="http://ehds.github.io/categories/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/"/>
+    
+    
+    <category term="哈夫曼" scheme="http://ehds.github.io/tags/%E5%93%88%E5%A4%AB%E6%9B%BC/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>如何使得 raft 算法相继两个leader 的 term 连续</title>
+    <link href="http://ehds.github.io/2021/05/29/make-raft-two-successive-leaders-have-consecutive-terms/"/>
+    <id>http://ehds.github.io/2021/05/29/make-raft-two-successive-leaders-have-consecutive-terms/</id>
+    <published>2021-05-29T16:26:36.000Z</published>
+    <updated>2022-09-12T09:06:19.336Z</updated>
+    
+    
+    <summary type="html">&lt;p&gt;我们思考一个有趣的问题，如何让&lt;strong&gt;每个term都选举出一个唯一合法的leader&lt;/strong&gt;?&lt;/p&gt;</summary>
+    
+    
+    
+    <category term="分布式" scheme="http://ehds.github.io/categories/%E5%88%86%E5%B8%83%E5%BC%8F/"/>
+    
+    
+    <category term="RAFT" scheme="http://ehds.github.io/tags/RAFT/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Raft 进行单节点变换时遇到的问题</title>
+    <link href="http://ehds.github.io/2021/05/11/raft-single-peer-change/"/>
+    <id>http://ehds.github.io/2021/05/11/raft-single-peer-change/</id>
+    <published>2021-05-11T19:22:46.000Z</published>
+    <updated>2022-09-12T09:06:19.336Z</updated>
+    
+    
+    <summary type="html">&lt;p&gt;通常在实际使用 Raft 过程中，难免会遇到节点变更的问题。&lt;/p&gt;</summary>
+    
+    
+    
+    <category term="分布式" scheme="http://ehds.github.io/categories/%E5%88%86%E5%B8%83%E5%BC%8F/"/>
+    
+    
+    <category term="raft" scheme="http://ehds.github.io/tags/raft/"/>
+    
+    <category term="分布式" scheme="http://ehds.github.io/tags/%E5%88%86%E5%B8%83%E5%BC%8F/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Merkle-Tree在比特币中的应用</title>
+    <link href="http://ehds.github.io/2021/05/08/Merkle-tree-in-bitcoin/"/>
+    <id>http://ehds.github.io/2021/05/08/Merkle-tree-in-bitcoin/</id>
+    <published>2021-05-08T16:51:36.000Z</published>
+    <updated>2022-09-12T09:06:19.336Z</updated>
+    
+    
+    <summary type="html">&lt;p&gt;哈希树（hash tree；Merkle tree），在密码学及计算机科学中是一种树形数据结构，用于校验数据完整性和有效性，并且被广泛的应用于区块链网络中。&lt;/p&gt;</summary>
+    
+    
+    
+    <category term="数据结构" scheme="http://ehds.github.io/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/"/>
+    
+    
+    <category term="比特币" scheme="http://ehds.github.io/tags/%E6%AF%94%E7%89%B9%E5%B8%81/"/>
+    
+    <category term="区块链" scheme="http://ehds.github.io/tags/%E5%8C%BA%E5%9D%97%E9%93%BE/"/>
+    
+    <category term="Merkle Tree" scheme="http://ehds.github.io/tags/Merkle-Tree/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>TiDB 简单介绍（部分感兴趣点）</title>
+    <link href="http://ehds.github.io/2021/04/17/tidb-mini-survey/"/>
+    <id>http://ehds.github.io/2021/04/17/tidb-mini-survey/</id>
+    <published>2021-04-17T11:32:36.000Z</published>
+    <updated>2022-09-12T09:06:19.336Z</updated>
+    
+    
+    <summary type="html">&lt;p&gt;TiDB 是一款定位于在线事务处理/在线分析处理（ HTAP: HybridTransactional/Analytical Processing）的融合型数据库产品，实现了一键水平伸缩，强一致性的多副本数据安全，分布式事务，实时OLAP 等重要特性。同时兼容 MySQL 协议和生态，迁移便捷，运维成本极低。&lt;/p&gt;</summary>
+    
+    
+    
+    <category term="数据库" scheme="http://ehds.github.io/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/"/>
+    
+    
+    <category term="分布式事务" scheme="http://ehds.github.io/tags/%E5%88%86%E5%B8%83%E5%BC%8F%E4%BA%8B%E5%8A%A1/"/>
+    
+    <category term="TiDB" scheme="http://ehds.github.io/tags/TiDB/"/>
+    
+    <category term="TiKV" scheme="http://ehds.github.io/tags/TiKV/"/>
+    
+    <category term="TiSpark" scheme="http://ehds.github.io/tags/TiSpark/"/>
+    
+    <category term="分布式数据库" scheme="http://ehds.github.io/tags/%E5%88%86%E5%B8%83%E5%BC%8F%E6%95%B0%E6%8D%AE%E5%BA%93/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>ARP协议返回IP并不匹配的MAC地址?</title>
+    <link href="http://ehds.github.io/2021/04/14/arp-return-not-match-ip/"/>
+    <id>http://ehds.github.io/2021/04/14/arp-return-not-match-ip/</id>
+    <published>2021-04-14T21:22:36.000Z</published>
+    <updated>2022-09-12T09:06:19.336Z</updated>
+    
+    
+    <summary type="html">&lt;p&gt;在一个多网卡的计算机中（Linux），假设网卡为 &lt;code&gt;A&lt;/code&gt; 和 &lt;code&gt;B&lt;/code&gt; 同时联入同一个子网，每个网卡具有唯一的 MAC 地址(&lt;code&gt;MAC_A&lt;/code&gt; 和 &lt;code&gt;MAC_B&lt;/code&gt;)和 IP 地址(&lt;code&gt;IP_A&lt;/code&gt;和&lt;code&gt;IP_B&lt;/code&gt;)。&lt;br&gt;当同一子网的主机发起 ARP 请求，询问&lt;code&gt;IP_A&lt;/code&gt;的MAC是谁的时候，这个主机该如何应答？&lt;br&gt;按照正常情况应该是返回&lt;code&gt;MAC_A&lt;/code&gt;是吧，但是可能事实并不是这样。&lt;/p&gt;</summary>
+    
+    
+    
+    <category term="计算机网络" scheme="http://ehds.github.io/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/"/>
+    
+    
+    <category term="ARP" scheme="http://ehds.github.io/tags/ARP/"/>
+    
+    <category term="网络" scheme="http://ehds.github.io/tags/%E7%BD%91%E7%BB%9C/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>如何合理管理容器文件夹权限</title>
+    <link href="http://ehds.github.io/2021/01/21/docker_directory_premission/"/>
+    <id>http://ehds.github.io/2021/01/21/docker_directory_premission/</id>
+    <published>2021-01-21T11:32:36.000Z</published>
+    <updated>2022-09-12T09:06:19.336Z</updated>
+    
+    
+    <summary type="html">&lt;p&gt;Docker 默认是以root方式运行，并且镜像内部的默认用户也为root，所以在容器创建文件后，权限为root，退出容器发现文件夹等权限为root，本地宿主机不能够正常访问，下面是一些解决方法(&lt;strong&gt;推荐第一和第四种&lt;/strong&gt;)。&lt;/p&gt;</summary>
+    
+    
+    
+    <category term="tips" scheme="http://ehds.github.io/categories/tips/"/>
+    
+    
+    <category term="容器" scheme="http://ehds.github.io/tags/%E5%AE%B9%E5%99%A8/"/>
+    
+    <category term="Docker" scheme="http://ehds.github.io/tags/Docker/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>如何在Docker里面使用systemctl</title>
+    <link href="http://ehds.github.io/2021/01/21/docker_systemctl/"/>
+    <id>http://ehds.github.io/2021/01/21/docker_systemctl/</id>
+    <published>2021-01-21T11:32:36.000Z</published>
+    <updated>2022-09-12T09:06:19.336Z</updated>
+    
+    
+    <summary type="html">&lt;p&gt;我们有时在使用docker的时候，会发现在容器中是用systemctl 或者 service的时候，会遇到下面的错误：&lt;br&gt;&lt;code&gt;Failed to connect to bus: No such file or directory&lt;/code&gt;&lt;/p&gt;</summary>
+    
+    
+    
+    <category term="tips" scheme="http://ehds.github.io/categories/tips/"/>
+    
+    
+    <category term="容器" scheme="http://ehds.github.io/tags/%E5%AE%B9%E5%99%A8/"/>
+    
+    <category term="Docker" scheme="http://ehds.github.io/tags/Docker/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Q-Prop论文阅读笔记</title>
+    <link href="http://ehds.github.io/2021/01/05/qprop/"/>
+    <id>http://ehds.github.io/2021/01/05/qprop/</id>
+    <published>2021-01-05T21:32:36.000Z</published>
+    <updated>2022-09-12T09:06:19.336Z</updated>
+    
+    
+    <summary type="html">&lt;p&gt;Q-Prop利用Control Variate来减小强化学习中由于采样所带来的方差较高的问题。&lt;/p&gt;</summary>
+    
+    
+    
+    <category term="深度学习" scheme="http://ehds.github.io/categories/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/"/>
+    
+    
+    <category term="深度学习" scheme="http://ehds.github.io/tags/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/"/>
+    
+    <category term="q-props" scheme="http://ehds.github.io/tags/q-props/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>从另一个角度解释图卷积</title>
+    <link href="http://ehds.github.io/2020/12/26/interpretation-graph-convolution/"/>
+    <id>http://ehds.github.io/2020/12/26/interpretation-graph-convolution/</id>
+    <published>2020-12-26T09:22:36.000Z</published>
+    <updated>2022-09-12T09:06:19.336Z</updated>
+    
+    
+    <summary type="html">&lt;p&gt;传统的解释图神经网络是从傅里叶变换着手，本文拟从另一个角度来解释图卷积神经网络，先从一个直观的角度入手，然后使用数学的语言加以描述。&lt;/p&gt;</summary>
+    
+    
+    
+    <category term="深度学习" scheme="http://ehds.github.io/categories/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/"/>
+    
+    
+    <category term="深度学习" scheme="http://ehds.github.io/tags/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/"/>
+    
+    <category term="图卷积" scheme="http://ehds.github.io/tags/%E5%9B%BE%E5%8D%B7%E7%A7%AF/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>区块链从入门资料</title>
+    <link href="http://ehds.github.io/2020/12/20/blockchain-sources/"/>
+    <id>http://ehds.github.io/2020/12/20/blockchain-sources/</id>
+    <published>2020-12-20T19:22:36.000Z</published>
+    <updated>2022-09-12T09:06:19.336Z</updated>
+    
+    
+    <summary type="html">&lt;blockquote&gt;
+&lt;p&gt;什么是比特币？ 比特币、比特币就是比较特殊的货币 —— 一位博览群书的卖书大爷&lt;/p&gt;
+&lt;/blockquote&gt;</summary>
+    
+    
+    
+    <category term="区块链" scheme="http://ehds.github.io/categories/%E5%8C%BA%E5%9D%97%E9%93%BE/"/>
+    
+    
+    <category term="区块链" scheme="http://ehds.github.io/tags/%E5%8C%BA%E5%9D%97%E9%93%BE/"/>
+    
+    <category term="blockchain" scheme="http://ehds.github.io/tags/blockchain/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>数据库查询优化资料整理</title>
+    <link href="http://ehds.github.io/2020/12/10/QueryOptimizationSources/"/>
+    <id>http://ehds.github.io/2020/12/10/QueryOptimizationSources/</id>
+    <published>2020-12-10T09:22:36.000Z</published>
+    <updated>2022-09-12T09:06:19.336Z</updated>
+    
+    
+    <summary type="html">&lt;p&gt;数据库查询优化的目的是提升查询优化效率,但往往求解这个问题是比较困难的。以下整理了有关查询优化相关的资料以供学习。&lt;/p&gt;</summary>
+    
+    
+    
+    <category term="数据库" scheme="http://ehds.github.io/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/"/>
+    
+    
+    <category term="数据库" scheme="http://ehds.github.io/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>数据库里面的cardinality（基数）到底是什么？</title>
+    <link href="http://ehds.github.io/2020/12/09/WhatIsDatabaseCardinality/"/>
+    <id>http://ehds.github.io/2020/12/09/WhatIsDatabaseCardinality/</id>
+    <published>2020-12-09T09:22:36.000Z</published>
+    <updated>2022-09-12T09:06:19.336Z</updated>
+    
+    
+    <summary type="html">&lt;p&gt;在查询优化里面，经常要对数据库的查询结果的基数进行估计，利用它来计算代价，从而基于代价选择最优的执行计划。&lt;/p&gt;</summary>
+    
+    
+    
+    <category term="数据库" scheme="http://ehds.github.io/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/"/>
+    
+    
+    <category term="数据库" scheme="http://ehds.github.io/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Bloom和Cuckoo过滤器的性能比较</title>
+    <link href="http://ehds.github.io/2018/10/25/Bloom%E5%92%8CCuckoo%E8%BF%87%E6%BB%A4%E5%99%A8%E7%9A%84%E6%80%A7%E8%83%BD%E6%AF%94%E8%BE%83/"/>
+    <id>http://ehds.github.io/2018/10/25/Bloom%E5%92%8CCuckoo%E8%BF%87%E6%BB%A4%E5%99%A8%E7%9A%84%E6%80%A7%E8%83%BD%E6%AF%94%E8%BE%83/</id>
+    <published>2018-10-25T20:00:12.000Z</published>
+    <updated>2022-09-12T09:06:19.336Z</updated>
+    
+    
+    <summary type="html">&lt;p&gt;Bloom 过滤器的优点&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;在数据量比较小的时候插入和查询的速度快&lt;/li&gt;
+&lt;li&gt;占用空间比较小&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;缺点：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;数据量较大的时候，误报率和空间使用增高&lt;/li&gt;
+&lt;li&gt;不支持删除操作</summary>
+    
+    
+    
+    <category term="算法" scheme="http://ehds.github.io/categories/%E7%AE%97%E6%B3%95/"/>
+    
+    
+    <category term="Bloom Cuckoo" scheme="http://ehds.github.io/tags/Bloom-Cuckoo/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>一个整数的2的幂次分解问题</title>
+    <link href="http://ehds.github.io/2018/10/10/%E4%B8%80%E4%B8%AA%E6%95%B4%E6%95%B0%E7%9A%842%E7%9A%84%E5%B9%82%E6%AC%A1%E5%88%86%E8%A7%A3%E9%97%AE%E9%A2%98/"/>
+    <id>http://ehds.github.io/2018/10/10/%E4%B8%80%E4%B8%AA%E6%95%B4%E6%95%B0%E7%9A%842%E7%9A%84%E5%B9%82%E6%AC%A1%E5%88%86%E8%A7%A3%E9%97%AE%E9%A2%98/</id>
+    <published>2018-10-10T13:48:40.000Z</published>
+    <updated>2022-09-12T09:06:19.336Z</updated>
+    
+    
+    <summary type="html">&lt;h2 id=&quot;1-问题描述&quot;&gt;&lt;a href=&quot;#1-问题描述&quot; class=&quot;headerlink&quot; title=&quot;1. 问题描述&quot;&gt;&lt;/a&gt;1. 问题描述&lt;/h2&gt;&lt;p&gt; 有这样一个数列&lt;br&gt;$$&lt;br&gt;1\ 2\  4 … 2^n…  其中n \ge 0&lt;br&gt;$$&lt;br&gt;其中每个数字仅有两个，给定一个正整数N，找到所有的可能解使得这些数字之和等于N。&lt;/p&gt;</summary>
+    
+    
+    
+    <category term="编程" scheme="http://ehds.github.io/categories/%E7%BC%96%E7%A8%8B/"/>
+    
+    
+    <category term="算法" scheme="http://ehds.github.io/tags/%E7%AE%97%E6%B3%95/"/>
+    
+    <category term="2的幂次项问题" scheme="http://ehds.github.io/tags/2%E7%9A%84%E5%B9%82%E6%AC%A1%E9%A1%B9%E9%97%AE%E9%A2%98/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>机器学习(周志华)笔记</title>
+    <link href="http://ehds.github.io/2018/08/07/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0-%E5%91%A8%E5%BF%97%E5%8D%8E-%E7%AC%94%E8%AE%B0/"/>
+    <id>http://ehds.github.io/2018/08/07/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0-%E5%91%A8%E5%BF%97%E5%8D%8E-%E7%AC%94%E8%AE%B0/</id>
+    <published>2018-08-07T16:56:41.000Z</published>
+    <updated>2022-09-12T09:06:19.336Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;p&gt;p36&lt;/p&gt;
+&lt;h2 id=&quot;代价曲线&quot;&gt;&lt;a href=&quot;#代价曲线&quot; class=&quot;headerlink&quot; title=&quot;代价曲线&quot;&gt;&lt;/a&gt;代价曲线&lt;/h2&gt;&lt;p&gt;在p36有关于代价曲线的一些知识下面一篇知乎的回答可以作为知识的补充&lt;br&gt;&lt;a</summary>
+        
+      
+    
+    
+    
+    <category term="机器学习" scheme="http://ehds.github.io/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/"/>
+    
+    
+    <category term="机器学习" scheme="http://ehds.github.io/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/"/>
+    
+    <category term="笔记" scheme="http://ehds.github.io/tags/%E7%AC%94%E8%AE%B0/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>leetcode interger-repleacement  题解</title>
+    <link href="http://ehds.github.io/2018/08/01/leetcode-interger-repleacement-%E9%A2%98%E8%A7%A3/"/>
+    <id>http://ehds.github.io/2018/08/01/leetcode-interger-repleacement-%E9%A2%98%E8%A7%A3/</id>
+    <published>2018-08-01T16:14:42.000Z</published>
+    <updated>2022-09-12T09:06:19.336Z</updated>
+    
+    
+    <summary type="html">&lt;blockquote&gt;
+&lt;p&gt;题目地址：&lt;a href=&quot;https://leetcode.com/problems/integer-replacement/description/&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;interger-repleacement&lt;/a&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h2 id=&quot;题目介绍&quot;&gt;&lt;a href=&quot;#题目介绍&quot; class=&quot;headerlink&quot; title=&quot;题目介绍&quot;&gt;&lt;/a&gt;题目介绍&lt;/h2&gt;&lt;p&gt;Given a positive integer n and you can do operations as follow:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;If n is even, replace n with n/2.&lt;/li&gt;
+&lt;li&gt;If n is odd, you can replace n with either n + 1 or n - 1.&lt;br&gt;What is the minimum number of replacements needed for n to become 1?</summary>
+    
+    
+    
+    <category term="算法" scheme="http://ehds.github.io/categories/%E7%AE%97%E6%B3%95/"/>
+    
+    
+    <category term="leetcode" scheme="http://ehds.github.io/tags/leetcode/"/>
+    
+    <category term="题解" scheme="http://ehds.github.io/tags/%E9%A2%98%E8%A7%A3/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>统计学习方法笔记</title>
+    <link href="http://ehds.github.io/2018/06/21/%E7%BB%9F%E8%AE%A1%E5%AD%A6%E4%B9%A0%E6%96%B9%E6%B3%95%E7%AC%94%E8%AE%B0/"/>
+    <id>http://ehds.github.io/2018/06/21/%E7%BB%9F%E8%AE%A1%E5%AD%A6%E4%B9%A0%E6%96%B9%E6%B3%95%E7%AC%94%E8%AE%B0/</id>
+    <published>2018-06-21T16:23:32.000Z</published>
+    <updated>2022-09-12T09:06:19.336Z</updated>
+    
+    
+    <summary type="html">&lt;blockquote&gt;
+&lt;p&gt;《统计学习方法》是计算机及其应用领域的一门重要的学科。《统计学习方法》全面系统地介绍了统计学习的主要方法，特别是监督学习方法，包括感知机、k近邻法、朴素贝叶斯法、决策树、逻辑斯谛回归与熵模型、支持向量机、提升方法、EM算法、隐马尔可夫模型和条件随机场等。除第1章概论和最后一章总结外，每章介绍一种方法。叙述从具体问题或实例入手，由浅入深，阐明思路，给出必要的数学推导，便于读者掌握统计学习方法的实质，学会运用。为满足读者进一步学习的需要，书中还介绍了一些相关研究，给出了少量习题，列出了主要参考文献。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;blockquote&gt;
+&lt;p&gt;针对书中某些地方的疑惑做出注释&lt;/p&gt;
+&lt;/blockquote&gt;</summary>
+    
+    
+    
+    <category term="笔记" scheme="http://ehds.github.io/categories/%E7%AC%94%E8%AE%B0/"/>
+    
+    
+    <category term="笔记" scheme="http://ehds.github.io/tags/%E7%AC%94%E8%AE%B0/"/>
+    
+    <category term="统计学习方法" scheme="http://ehds.github.io/tags/%E7%BB%9F%E8%AE%A1%E5%AD%A6%E4%B9%A0%E6%96%B9%E6%B3%95/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>知乎上一则python最炫代码解析</title>
+    <link href="http://ehds.github.io/2018/06/18/%E7%9F%A5%E4%B9%8E%E4%B8%8A%E4%B8%80%E5%88%99python%E6%9C%80%E7%82%AB%E4%BB%A3%E7%A0%81%E8%A7%A3%E6%9E%90/"/>
+    <id>http://ehds.github.io/2018/06/18/%E7%9F%A5%E4%B9%8E%E4%B8%8A%E4%B8%80%E5%88%99python%E6%9C%80%E7%82%AB%E4%BB%A3%E7%A0%81%E8%A7%A3%E6%9E%90/</id>
+    <published>2018-06-18T19:40:37.000Z</published>
+    <updated>2022-09-12T09:06:19.336Z</updated>
+    
+    
+    <summary type="html">&lt;p&gt;在知乎的一则问题&lt;a href=&quot;https://www.zhihu.com/question/66360542&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;有哪些能炫技的代码写法？&lt;/a&gt;中看到一个&lt;a href=&quot;https://www.zhihu.com/question/66360542/answer/407418354&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;回答&lt;/a&gt;:使用python输出”hello world”,&lt;/p&gt;
+&lt;p&gt;看完回答确实很炫。&lt;/p&gt;</summary>
+    
+    
+    
+    <category term="编程" scheme="http://ehds.github.io/categories/%E7%BC%96%E7%A8%8B/"/>
+    
+    
+    <category term="python炫技代码" scheme="http://ehds.github.io/tags/python%E7%82%AB%E6%8A%80%E4%BB%A3%E7%A0%81/"/>
+    
+  </entry>
+  
+</feed>

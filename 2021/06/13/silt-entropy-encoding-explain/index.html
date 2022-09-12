@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head><meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+<meta name="description" content="SILT 论文中关于 Entropy coding 的解释"/><meta name="keywords" content="哈夫曼, Ehds" /><link rel="alternate" href="/atom.xml" title="Ehds"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=2.11.0" />
+<link rel="canonical" href="http://ehds.github.io/2021/06/13/silt-entropy-encoding-explain/"/>
+
+<link rel="stylesheet" type="text/css" href="/lib/fancybox/jquery.fancybox.css" /><script type="text/x-mathjax-config">
+    MathJax.Hub.Config({ tex2jax: { inlineMath: [['$','$'], ['\\(','\\)']] } });
+  </script>
+  <script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+<link rel="stylesheet" type="text/css" href="/css/style.css?v=2.11.0" />
+
+<script id="baidu_push">
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+<script>
+  window.config = {"leancloud":{"app_id":null,"app_key":null},"toc":true,"fancybox":true,"pjax":"","latex":true};
+</script>
+
+    <title>SILT 论文中关于 Entropy coding 的解释 - Ehds</title>
+  <meta name="generator" content="Hexo 4.2.1"><link rel="alternate" href="/atom.xml" title="Ehds" type="application/atom+xml">
+</head>
+
+  <body><div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/." class="logo">Ehds</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list"><a href="/">
+        <li class="mobile-menu-item">Home
+          </li>
+      </a><a href="/archives/">
+        <li class="mobile-menu-item">Archives
+          </li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">Tags
+          </li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">Categories
+          </li>
+      </a><a href="/about/">
+        <li class="mobile-menu-item">About
+          </li>
+      </a></ul>
+</nav>
+<div class="container" id="mobile-panel">
+      <header id="header" class="header"><div class="logo-wrapper">
+  <a href="/." class="logo">Ehds</a>
+</div>
+
+<nav class="site-navbar"><ul id="menu" class="menu"><li class="menu-item">
+          <a class="menu-item-link" href="/">
+            Home
+            </a>
+        </li>
+      <li class="menu-item">
+          <a class="menu-item-link" href="/archives/">
+            Archives
+            </a>
+        </li>
+      <li class="menu-item">
+          <a class="menu-item-link" href="/tags/">
+            Tags
+            </a>
+        </li>
+      <li class="menu-item">
+          <a class="menu-item-link" href="/categories/">
+            Categories
+            </a>
+        </li>
+      <li class="menu-item">
+          <a class="menu-item-link" href="/about/">
+            About
+            </a>
+        </li>
+      </ul></nav>
+</header>
+
+      <main id="main" class="main">
+        <div class="content-wrapper">
+          <div id="content" class="content"><article class="post">
+    <header class="post-header">
+      <h1 class="post-title">SILT 论文中关于 Entropy coding 的解释
+        </h1>
+
+      <div class="post-meta">
+        <span class="post-time">
+          2021-06-13
+        </span><span class="post-category">
+            <a href="/categories/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/">论文阅读</a>
+            </span>
+        </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+    <h2 class="post-toc-title">Contents</h2>
+    <div class="post-toc-content">
+      <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#问题引入"><span class="toc-text">问题引入</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#结果验证"><span class="toc-text">结果验证</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#参考文献："><span class="toc-text">参考文献：</span></a></li></ol>
+    </div>
+  </div><div class="post-content"><p>SILT 论文中关于 Entropy coding 的解释</p>
+<a id="more"></a>
+<h3 id="问题引入"><a href="#问题引入" class="headerlink" title="问题引入"></a>问题引入</h3><p>论文 “SILT: A Memory-Efficient, High-Performance Key-Value Store” [3] 中 Figure 5 描述了如何构建一个 trie 树 （前缀树）：<br><img src="https://i.loli.net/2021/06/13/CWyYfhAUvITdK8q.png" alt="图片.png"><br><strong>Figure 5： Example of a trie built for indexing sorted keys. Theindex of each leaf node matches the index of the correspondingkey in the sorted keys.</strong></p>
+<p>trie 树 中每个非叶子结点代表其后继所有结点 key 的最长公共前缀，可以提升查找速度。</p>
+<p>在论文中的 Figure 6 (c)，提到了几种 trie 树的表示方法：<br><img src="https://i.loli.net/2021/06/13/6civjtXVFPe5YGQ.png" alt="图片2.png"></p>
+<p><strong>Figure 6: (a) Alternative view of Figure 5, where a pair of num-bers in each internal node denotes the number of leaf nodes inits left and right subtries.  (b) A recursive form that representsthe trie.   (c)  Its entropy-coded representation used by Sorted-Store.</strong></p>
+<p>其中，（a）是将中间结点使用两个数字表示，第一个数字代表左子树叶子结点个数，第二个数字代表右子树的叶子结点个数；（b）是将(a)转化为数组的形式表示，在查找的时候可以根据 key 的每位上的二进制数判断，如果为0 继续到下一位，如果为 1 则跳过接下来的数字（左子树）， 继续判断，直到叶子结点（数字为1），从而得到其在所有数据中的offset，可以结合论文的例子理解；（c）是使用Entropy coding表示，进一步压缩空间。</p>
+<p>关于（c）是怎么计算而来，论文没有非常明显的步骤，仅做了一些算法思想的描述</p>
+<blockquote>
+<p>The value of|L|tends to be close to half of|T|(thenumber of leaf nodes inT) because fixed-length hashed keys are uni-formly distributed over the key space, so both subtries have the sameprobability of storing a key. More formally,$|L|∼Binomial(|T|,\frac{1}{2})$</p>
+</blockquote>
+<p>在阅读的时候可能存在一定的疑问。针对（c）的计算方式，作如下的详细说明，欢迎指正。<br>（c） 的作用主要是为了压缩上面的数组中的数字，因为每个数字可能出现的概率不一样，如果使用统一长度的大小来表示这些数字，一定会造成空间浪费。还好<a href="https://en.wikipedia.org/wiki/Huffman_coding" target="_blank" rel="noopener">哈夫曼树</a>[2] 可以很好的解决这个问题，哈夫曼树是根据不同的 key 的权重来构造编码方式，权重越高的所需要的编码位数越少，通常权重选择为其 key 出现的概率，所以也是一种 <a href="https://en.wikipedia.org/wiki/Entropy_encoding" target="_blank" rel="noopener">entropy coding</a>。</p>
+<p>如Figure 6(c)，在根结点中，其后继的叶子结点数$n$ 为 8，那么它左子树的大小$|L|∼Binomial(8,\frac{1}{2})$，此时的二项分布的分布列为：<br><img src="https://i.loli.net/2021/06/13/uyU3SGQ6iw1T2kO.png" alt="图片3.png"></p>
+<p>以此为权重构建哈夫曼树，那么实际的左子树大小为$3$ ，编码即 $00$。可以使用在线哈夫曼计算器查看<a href="https://planetcalc.com/2481/?probability=%5B%7B%22name%22%3A%220%22%2C%22value%22%3A0.0039%2C%22pkID%22%3A%2228632%22%2C%22save_label%22%3A%22%22%2C%22cancel_label%22%3A%22%22%7D%2C%7B%22name%22%3A%221%22%2C%22value%22%3A0.0313%2C%22pkID%22%3A%2228633%22%2C%22save_label%22%3A%22%22%2C%22cancel_label%22%3A%22%22%7D%2C%7B%22name%22%3A%227%22%2C%22value%22%3A0.0313%2C%22pkID%22%3A%2228634%22%2C%22save_label%22%3A%22%22%2C%22cancel_label%22%3A%22%22%7D%2C%7B%22name%22%3A%222%22%2C%22value%22%3A0.1094%2C%22pkID%22%3A%2228635%22%2C%22save_label%22%3A%22%22%2C%22cancel_label%22%3A%22%22%7D%2C%7B%22name%22%3A%226%22%2C%22value%22%3A0.1094%2C%22pkID%22%3A%2228636%22%2C%22save_label%22%3A%22%22%2C%22cancel_label%22%3A%22%22%7D%2C%7B%22name%22%3A%224%22%2C%22value%22%3A0.2734%2C%22pkID%22%3A%2228637%22%2C%22save_label%22%3A%22%22%2C%22cancel_label%22%3A%22%22%7D%2C%7B%22name%22%3A%223%22%2C%22value%22%3A0.2188%2C%22pkID%22%3A%2228637%22%2C%22save_label%22%3A%22%22%2C%22cancel_label%22%3A%22%22%7D%2C%7B%22name%22%3A%225%22%2C%22value%22%3A0.2188%2C%22pkID%22%3A%2228637%22%2C%22save_label%22%3A%22%22%2C%22cancel_label%22%3A%22%22%7D%5D&inverted=0" target="_blank" rel="noopener">上述哈夫曼树</a>。</p>
+<p>同理数组中第二位的为 2 ，代表在（2，1）为根结点的左子树大小为 2，因为（2，1）节点是（3，5）节点的左子树的根节点，那么（2，1）这个位置的左子树的大小$|L|∼Binomial(3,\frac{1}{2})$，同理构建哈夫曼树后，因为实际左子树为2，即编码为 $0$。<strong>这里需要注意的是，在计算第二层的｜L｜的编码的时候 n 需要跟着改变（递归），类似于条件概率</strong>。 这里也是理解上存在问题的关键地方。所以完成剩余结点编码后就和图中的结果是一致的。</p>
+<h3 id="结果验证"><a href="#结果验证" class="headerlink" title="结果验证"></a>结果验证</h3><p>参考 SILT 的论文代码 <a href="https://github.com/silt/silt，" target="_blank" rel="noopener">https://github.com/silt/silt，</a> 其中关于此编码方式的代码位于 <a href="https://github.com/silt/silt/blob/master/fawnds/cindex/huffman.hpp" target="_blank" rel="noopener">huffman.hpp</a> 中, 编写测试代码：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">encode</span><span class="params">(<span class="keyword">int</span> n,<span class="keyword">int</span> left)</span></span>&#123;</span><br><span class="line">    <span class="function">huffman_tree_generator&lt;<span class="keyword">uint64_t</span>&gt; <span class="title">gen</span><span class="params">(n+<span class="number">1</span>)</span></span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">uint64_t</span> v = <span class="number">1</span>;</span><br><span class="line">    gen[<span class="number">0</span>] = v;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">unsigned</span> <span class="keyword">int</span> k = <span class="number">1</span>; k &lt;= n; k++)</span><br><span class="line">        gen[k] = v = v * (n - k + <span class="number">1</span>) / k;</span><br><span class="line"></span><br><span class="line">    <span class="function">huffman_tree&lt;RefType&gt; <span class="title">t</span><span class="params">(n + <span class="number">1</span>)</span></span>;</span><br><span class="line">    gen.generate(t);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">auto</span> huff = <span class="keyword">new</span> huffman&lt;RefType&gt;(t);</span><br><span class="line">    bit_vector&lt;&gt; bits;</span><br><span class="line">    <span class="comment">// encode</span></span><br><span class="line">    huff-&gt;encode(bits,left);  </span><br><span class="line">    <span class="comment">// print</span></span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">size_t</span> i =<span class="number">0</span> ;i&lt;bits.<span class="built_in">size</span>();i++)&#123;</span><br><span class="line">        <span class="built_in">std</span>::<span class="built_in">cout</span>&lt;&lt;bits[i];</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">cout</span>&lt;&lt;<span class="string">" "</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">   <span class="comment">// dfs encode</span></span><br><span class="line">    encode(<span class="number">8</span>,<span class="number">3</span>);</span><br><span class="line">    encode(<span class="number">3</span>,<span class="number">2</span>);</span><br><span class="line">    encode(<span class="number">1</span>,<span class="number">1</span>);</span><br><span class="line">    encode(<span class="number">5</span>,<span class="number">3</span>);</span><br><span class="line">    encode(<span class="number">3</span>,<span class="number">1</span>);</span><br><span class="line">    encode(<span class="number">1</span>,<span class="number">1</span>);</span><br><span class="line">    encode(<span class="number">1</span>,<span class="number">1</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>输出：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">00 0 1 11 11 1 1</span><br></pre></td></tr></table></figure>
+<p>与论文结果一致。</p>
+<h3 id="参考文献："><a href="#参考文献：" class="headerlink" title="参考文献："></a>参考文献：</h3><p>[1]《二項式分布》, 维基百科，自由的百科全书. 1月 31, 2021. 见于: 6月 13, 2021. [在线]. 载于: <a href="https://zh.wikipedia.org/w/index.php?title=%E4%BA%8C%E9%A0%85%E5%BC%8F%E5%88%86%E5%B8%83&amp;oldid=64032330" target="_blank" rel="noopener">https://zh.wikipedia.org/w/index.php?title=%E4%BA%8C%E9%A0%85%E5%BC%8F%E5%88%86%E5%B8%83&amp;oldid=64032330</a><br>[2]《Huffman coding》, Wikipedia. 5月 31, 2021. 见于: 6月 13, 2021. [在线]. 载于: <a href="https://en.wikipedia.org/w/index.php?title=Huffman_coding&amp;oldid=1026111001" target="_blank" rel="noopener">https://en.wikipedia.org/w/index.php?title=Huffman_coding&amp;oldid=1026111001</a><br>[3] H. Lim, B. Fan, D. G. Andersen和M. Kaminsky, 《SILT: A Memory-Efficient, High-Performance Key-Value Store》, 页 13.</p>
+
+      </div>
+      <div class="post-copyright">
+    <p class="copyright-item">
+      <span>Author: </span>
+      <a href="http://ehds.github.io">DongSheng</a>
+    </p>
+    <p class="copyright-item">
+      <span>Link: </span>
+      <a href="http://ehds.github.io/2021/06/13/silt-entropy-encoding-explain/">http://ehds.github.io/2021/06/13/silt-entropy-encoding-explain/</a>
+    </p>
+    <p class="copyright-item">
+      <span>License: </span><a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/" target="_blank">知识共享署名-非商业性使用 4.0 国际许可协议</a>
+    </p>
+  </div>
+      <footer class="post-footer">
+        <div class="post-tags">
+            <a href="/tags/%E5%93%88%E5%A4%AB%E6%9B%BC/">哈夫曼</a>
+            </div>
+        
+        <nav class="post-nav"><a class="prev" href="/2021/07/20/bthread_schedule/">
+        <i class="iconfont icon-left"></i>
+        <span class="prev-text nav-default">bthread调度策略探索</span>
+        <span class="prev-text nav-mobile">Prev</span>
+      </a>
+    <a class="next" href="/2021/05/29/make-raft-two-successive-leaders-have-consecutive-terms/">
+        <span class="next-text nav-default">如何使得 raft 算法相继两个leader 的 term 连续</span>
+        <span class="prev-text nav-mobile">Next</span>
+        <i class="iconfont icon-right"></i>
+      </a>
+    </nav></footer>
+    </article></div><div class="comments" id="comments"><div id="gitalk-container"></div>
+    </div></div>
+      </main>
+
+      <footer id="footer" class="footer"><div class="social-links"><a href="mailto:ehds@qq.com" class="iconfont icon-email" title="email"></a>
+        <a href="https://github.com/ehds" target="_blank" rel="noopener" class="iconfont icon-github" title="github"></a>
+        <a href="/atom.xml" class="iconfont icon-rss" title="rss"></a>
+    </div><div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a>
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    Theme - 
+    <a class="theme-link" href="https://github.com/ahonn/hexo-theme-even" target="_blank" rel="noopener">Even</a>
+  </span>
+
+  <span class="copyright-year">&copy;2017 - 2022<span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">DongSheng</span>
+  </span>
+</div>
+</footer>
+
+      <div class="back-to-top" id="back-to-top">
+        <i class="iconfont icon-up"></i>
+      </div>
+    </div>
+<script src="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.css"/>
+
+
+<script src="//cdn.jsdelivr.net/npm/js-md5@0.7.3/src/md5.min.js"></script>
+
+<script>
+  var gitalk = new Gitalk({
+    clientID: 'b75057216cc9401f28a0',
+    clientSecret: '6089f1aac89dc7f55aa1cceab307a61e85399bfc',
+    repo: 'ehds.github.io',
+    owner: 'ehds',
+    admin: ['ehds'],
+    id: md5(location.pathname),
+    
+      language: 'en',
+    
+    distractionFreeMode: 'true'
+  });
+  gitalk.render('gitalk-container');
+</script><script type="text/javascript" src="/lib/jquery/jquery.min.js"></script>
+  <script type="text/javascript" src="/lib/slideout/slideout.js"></script>
+  <script type="text/javascript" src="/lib/fancybox/jquery.fancybox.pack.js"></script>
+  <script type="text/javascript" src="/js/src/even.js?v=2.11.0"></script>
+</body>
+</html>

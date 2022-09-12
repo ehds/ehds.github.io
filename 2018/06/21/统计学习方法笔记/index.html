@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head><meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+<meta name="description" content="统计学习方法笔记"/><meta name="keywords" content="笔记, 统计学习方法, Ehds" /><link rel="alternate" href="/atom.xml" title="Ehds"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=2.11.0" />
+<link rel="canonical" href="http://ehds.github.io/2018/06/21/统计学习方法笔记/"/>
+
+<link rel="stylesheet" type="text/css" href="/lib/fancybox/jquery.fancybox.css" /><script type="text/x-mathjax-config">
+    MathJax.Hub.Config({ tex2jax: { inlineMath: [['$','$'], ['\\(','\\)']] } });
+  </script>
+  <script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+<link rel="stylesheet" type="text/css" href="/css/style.css?v=2.11.0" />
+
+<script id="baidu_push">
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+<script>
+  window.config = {"leancloud":{"app_id":null,"app_key":null},"toc":true,"fancybox":true,"pjax":"","latex":true};
+</script>
+
+    <title>统计学习方法笔记 - Ehds</title>
+  <meta name="generator" content="Hexo 4.2.1"><link rel="alternate" href="/atom.xml" title="Ehds" type="application/atom+xml">
+</head>
+
+  <body><div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/." class="logo">Ehds</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list"><a href="/">
+        <li class="mobile-menu-item">Home
+          </li>
+      </a><a href="/archives/">
+        <li class="mobile-menu-item">Archives
+          </li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">Tags
+          </li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">Categories
+          </li>
+      </a><a href="/about/">
+        <li class="mobile-menu-item">About
+          </li>
+      </a></ul>
+</nav>
+<div class="container" id="mobile-panel">
+      <header id="header" class="header"><div class="logo-wrapper">
+  <a href="/." class="logo">Ehds</a>
+</div>
+
+<nav class="site-navbar"><ul id="menu" class="menu"><li class="menu-item">
+          <a class="menu-item-link" href="/">
+            Home
+            </a>
+        </li>
+      <li class="menu-item">
+          <a class="menu-item-link" href="/archives/">
+            Archives
+            </a>
+        </li>
+      <li class="menu-item">
+          <a class="menu-item-link" href="/tags/">
+            Tags
+            </a>
+        </li>
+      <li class="menu-item">
+          <a class="menu-item-link" href="/categories/">
+            Categories
+            </a>
+        </li>
+      <li class="menu-item">
+          <a class="menu-item-link" href="/about/">
+            About
+            </a>
+        </li>
+      </ul></nav>
+</header>
+
+      <main id="main" class="main">
+        <div class="content-wrapper">
+          <div id="content" class="content"><article class="post">
+    <header class="post-header">
+      <h1 class="post-title">统计学习方法笔记
+        </h1>
+
+      <div class="post-meta">
+        <span class="post-time">
+          2018-06-21
+        </span><span class="post-category">
+            <a href="/categories/%E7%AC%94%E8%AE%B0/">笔记</a>
+            </span>
+        </div>
+    </header>
+
+    <div class="post-content"><blockquote>
+<p>《统计学习方法》是计算机及其应用领域的一门重要的学科。《统计学习方法》全面系统地介绍了统计学习的主要方法，特别是监督学习方法，包括感知机、k近邻法、朴素贝叶斯法、决策树、逻辑斯谛回归与熵模型、支持向量机、提升方法、EM算法、隐马尔可夫模型和条件随机场等。除第1章概论和最后一章总结外，每章介绍一种方法。叙述从具体问题或实例入手，由浅入深，阐明思路，给出必要的数学推导，便于读者掌握统计学习方法的实质，学会运用。为满足读者进一步学习的需要，书中还介绍了一些相关研究，给出了少量习题，列出了主要参考文献。</p>
+</blockquote>
+<blockquote>
+<p>针对书中某些地方的疑惑做出注释</p>
+</blockquote>
+<a id="more"></a>
+
+<ul>
+<li>p85</li>
+</ul>
+<p>6.22式子<br>$$<br>\sum_{y}P(y|x)<br>=\sum_{y}\frac{exp(\sum_{i=1}^{n}w_{i}f_{i}(x,y))}{exp(1-w_{0})}<br>=1<br>$$</p>
+<p>得到：<br>$$<br>Z_{w}(x)=\sum_{y}{exp(\sum_{i=1}^{n}w_{i}f_{i}(x,y))}=exp(1-w_{0})<br>$$</p>
+<hr>
+<ul>
+<li>p87<br>已知训练数据的经验分布函数<br>$$<br>\tilde{P(X,Y)}<br>$$</li>
+</ul>
+<p>,条件概率分布$P(Y|X)$的对数似然函数为<br>$$<br>L_{\tilde{p}}(P_{w})=log\prod_{x,y}^{}P(y|x)^{\tilde{P}(x,y)}<br>$$</p>
+<p>如何理解这个对数似然函数呢？<br>因为一般的对数似然函数中，概率的指数部分一般都是整数，即这个概率在整个训练集中出现的次数，但是这里却还是一个概率。其实这里省略了一步，$P(y|x)$的指数部分应该是:</p>
+<p>$$\tilde{P}(x,y)*N$$</p>
+<p>其中N为训练集中的样本个数，取对数后就变成了</p>
+<p>$$<br>L_{\tilde{p}}(P_{w})=log\prod_{x,y}^{}P(y|x)^{\tilde{P}(x,y)}=\sum_{x,y}\tilde{P}(x,y) \times N \times logP(y|x)<br>$$<br>可以看出，这个N对对数似然函数函数的极大化并没有影响，所以省去。</p>
+<blockquote>
+<p>注：针对这个说法尚存疑问</p>
+</blockquote>
+<hr>
+<ul>
+<li>p89：<br>$$<br>\begin{align}<br>\frac{Z_{w+ \delta }(x)}{Z_{w}(x)}<br>&amp; = \sum_{y} \frac{exp(  \sum_{i=1}^{n}(w_{i}+\delta_{i})f_{i}(x,y)  )      }{Z_{w}(x)} \\<br>&amp; = \sum_{y}\frac{exp( \sum_{i=1}^{n}w_{i}f_{i}(x,y) ) exp(  \sum_{i=1}^{n}\delta_{i}f_{i}(x,y) ) ) } {Z_{w}(x)}\\<br>&amp; = \sum_{y}\frac{exp( \sum_{i=1}^{n}w_{i}f_{i}(x,y) )}{Z_{w}(x)} exp(  \sum_{i=1}^{n}\delta_{i}f_{i}(x,y) ) ) \\<br>&amp; = \sum_{y}p_{w}(y|x)exp(  \sum_{i=1}^{n}\delta_{i}f_{i}(x,y) )<br>\end{align}<br>$$</li>
+</ul>
+
+      </div>
+      <div class="post-copyright">
+    <p class="copyright-item">
+      <span>Author: </span>
+      <a href="http://ehds.github.io">DongSheng</a>
+    </p>
+    <p class="copyright-item">
+      <span>Link: </span>
+      <a href="http://ehds.github.io/2018/06/21/%E7%BB%9F%E8%AE%A1%E5%AD%A6%E4%B9%A0%E6%96%B9%E6%B3%95%E7%AC%94%E8%AE%B0/">http://ehds.github.io/2018/06/21/%E7%BB%9F%E8%AE%A1%E5%AD%A6%E4%B9%A0%E6%96%B9%E6%B3%95%E7%AC%94%E8%AE%B0/</a>
+    </p>
+    <p class="copyright-item">
+      <span>License: </span><a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/" target="_blank">知识共享署名-非商业性使用 4.0 国际许可协议</a>
+    </p>
+  </div>
+      <footer class="post-footer">
+        <div class="post-tags">
+            <a href="/tags/%E7%AC%94%E8%AE%B0/">笔记</a>
+            <a href="/tags/%E7%BB%9F%E8%AE%A1%E5%AD%A6%E4%B9%A0%E6%96%B9%E6%B3%95/">统计学习方法</a>
+            </div>
+        
+        <nav class="post-nav"><a class="prev" href="/2018/08/01/leetcode-interger-repleacement-%E9%A2%98%E8%A7%A3/">
+        <i class="iconfont icon-left"></i>
+        <span class="prev-text nav-default">leetcode interger-repleacement  题解</span>
+        <span class="prev-text nav-mobile">Prev</span>
+      </a>
+    <a class="next" href="/2018/06/18/%E7%9F%A5%E4%B9%8E%E4%B8%8A%E4%B8%80%E5%88%99python%E6%9C%80%E7%82%AB%E4%BB%A3%E7%A0%81%E8%A7%A3%E6%9E%90/">
+        <span class="next-text nav-default">知乎上一则python最炫代码解析</span>
+        <span class="prev-text nav-mobile">Next</span>
+        <i class="iconfont icon-right"></i>
+      </a>
+    </nav></footer>
+    </article></div><div class="comments" id="comments"><div id="gitalk-container"></div>
+    </div></div>
+      </main>
+
+      <footer id="footer" class="footer"><div class="social-links"><a href="mailto:ehds@qq.com" class="iconfont icon-email" title="email"></a>
+        <a href="https://github.com/ehds" target="_blank" rel="noopener" class="iconfont icon-github" title="github"></a>
+        <a href="/atom.xml" class="iconfont icon-rss" title="rss"></a>
+    </div><div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a>
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    Theme - 
+    <a class="theme-link" href="https://github.com/ahonn/hexo-theme-even" target="_blank" rel="noopener">Even</a>
+  </span>
+
+  <span class="copyright-year">&copy;2017 - 2022<span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">DongSheng</span>
+  </span>
+</div>
+</footer>
+
+      <div class="back-to-top" id="back-to-top">
+        <i class="iconfont icon-up"></i>
+      </div>
+    </div>
+<script src="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.css"/>
+
+
+<script src="//cdn.jsdelivr.net/npm/js-md5@0.7.3/src/md5.min.js"></script>
+
+<script>
+  var gitalk = new Gitalk({
+    clientID: 'b75057216cc9401f28a0',
+    clientSecret: '6089f1aac89dc7f55aa1cceab307a61e85399bfc',
+    repo: 'ehds.github.io',
+    owner: 'ehds',
+    admin: ['ehds'],
+    id: md5(location.pathname),
+    
+      language: 'en',
+    
+    distractionFreeMode: 'true'
+  });
+  gitalk.render('gitalk-container');
+</script><script type="text/javascript" src="/lib/jquery/jquery.min.js"></script>
+  <script type="text/javascript" src="/lib/slideout/slideout.js"></script>
+  <script type="text/javascript" src="/lib/fancybox/jquery.fancybox.pack.js"></script>
+  <script type="text/javascript" src="/js/src/even.js?v=2.11.0"></script>
+</body>
+</html>

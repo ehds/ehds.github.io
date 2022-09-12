@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head><meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+<meta name="description" content="多叉树求值问题"/><meta name="keywords" content="算法, 多叉树, Ehds" /><link rel="alternate" href="/atom.xml" title="Ehds"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=2.11.0" />
+<link rel="canonical" href="http://ehds.github.io/2017/05/29/多叉树求值问题/"/>
+
+<link rel="stylesheet" type="text/css" href="/lib/fancybox/jquery.fancybox.css" /><script type="text/x-mathjax-config">
+    MathJax.Hub.Config({ tex2jax: { inlineMath: [['$','$'], ['\\(','\\)']] } });
+  </script>
+  <script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+<link rel="stylesheet" type="text/css" href="/css/style.css?v=2.11.0" />
+
+<script id="baidu_push">
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+<script>
+  window.config = {"leancloud":{"app_id":null,"app_key":null},"toc":true,"fancybox":true,"pjax":"","latex":true};
+</script>
+
+    <title>多叉树求值问题 - Ehds</title>
+  <meta name="generator" content="Hexo 4.2.1"><link rel="alternate" href="/atom.xml" title="Ehds" type="application/atom+xml">
+</head>
+
+  <body><div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/." class="logo">Ehds</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list"><a href="/">
+        <li class="mobile-menu-item">Home
+          </li>
+      </a><a href="/archives/">
+        <li class="mobile-menu-item">Archives
+          </li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">Tags
+          </li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">Categories
+          </li>
+      </a><a href="/about/">
+        <li class="mobile-menu-item">About
+          </li>
+      </a></ul>
+</nav>
+<div class="container" id="mobile-panel">
+      <header id="header" class="header"><div class="logo-wrapper">
+  <a href="/." class="logo">Ehds</a>
+</div>
+
+<nav class="site-navbar"><ul id="menu" class="menu"><li class="menu-item">
+          <a class="menu-item-link" href="/">
+            Home
+            </a>
+        </li>
+      <li class="menu-item">
+          <a class="menu-item-link" href="/archives/">
+            Archives
+            </a>
+        </li>
+      <li class="menu-item">
+          <a class="menu-item-link" href="/tags/">
+            Tags
+            </a>
+        </li>
+      <li class="menu-item">
+          <a class="menu-item-link" href="/categories/">
+            Categories
+            </a>
+        </li>
+      <li class="menu-item">
+          <a class="menu-item-link" href="/about/">
+            About
+            </a>
+        </li>
+      </ul></nav>
+</header>
+
+      <main id="main" class="main">
+        <div class="content-wrapper">
+          <div id="content" class="content"><article class="post">
+    <header class="post-header">
+      <h1 class="post-title">多叉树求值问题
+        </h1>
+
+      <div class="post-meta">
+        <span class="post-time">
+          2017-05-29
+        </span><span class="post-category">
+            <a href="/categories/%E7%AE%97%E6%B3%95/">算法</a>
+            </span>
+        </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+    <h2 class="post-toc-title">Contents</h2>
+    <div class="post-toc-content">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#一-问题描述"><span class="toc-text">一 问题描述</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#二-算法思路"><span class="toc-text">二 算法思路</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-想法"><span class="toc-text">1 想法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#另外一个答主的回答"><span class="toc-text">另外一个答主的回答</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#三-总结"><span class="toc-text">三 总结</span></a></li></ol></li></ol>
+    </div>
+  </div><div class="post-content"><blockquote>
+<p>这是一篇来自<a href="https://segmentfault.com/q/1010000009551198/a-1020000009557725" target="_blank" rel="noopener">segmentfault</a>的问题</p>
+</blockquote>
+<h2 id="一-问题描述"><a href="#一-问题描述" class="headerlink" title="一 问题描述"></a>一 问题描述</h2><p>已知类定义如下</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Node</span> </span>&#123;</span><br><span class="line">    <span class="keyword">public</span> Double value;</span><br><span class="line">    <span class="keyword">public</span> List&lt;Node&gt; children;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<a id="more"></a>
+
+<p>输入node满足以下条件：</p>
+<ol>
+<li>node的value是大于0的浮点数</li>
+<li>node的下级节点（以及更下级节点）的value可能是null或者大于0的浮点数</li>
+</ol>
+<p>程序的作用如下：</p>
+<ol>
+<li>将树形结构里面所有value是null的均设为大于0的浮点数</li>
+<li>非叶子节点（即children数量大于0的节点）的value均等于它的children的value之和</li>
+<li><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">doit</span><span class="params">(Node node)</span></span>&#123;</span><br><span class="line">    ......</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+示例<br><img src="https://sfault-image.b0.upaiyun.com/270/325/2703252462-592656560fc32_articlex" alt=""><br>解答<br><img src="https://sfault-image.b0.upaiyun.com/398/845/3988454396-5926569baec74_articlex" alt=""></li>
+</ol>
+<h2 id="二-算法思路"><a href="#二-算法思路" class="headerlink" title="二 算法思路"></a>二 算法思路</h2><h3 id="1-想法"><a href="#1-想法" class="headerlink" title="1 想法"></a>1 想法</h3><p>分层次遍历，在每层的时候把确定的值加起来，为空的节点们去分父节点的值减去这部分确定的值的和（题目的要求）。然后如果不是叶节点的节点按照上述方法递归。<br>但是确定每个节点的值得时候，如某些叶子节点的时候，我们需要随机给他们赋值，他们的值有些受到父节点约束，有些不收父节点约束比如第二层的第三个节点的两个叶子节点，如果我们赋给他们的值使得他们的父节点不满足要求了，这就不符合题意了。所以我想的是在每次确定值得时候传入这些节点的取值范围。这些范围的确定又会导致一些问题，问题又会变得复杂。<br>范围确定，每个空节点的最大值肯定是父节点的值减去同行子节点的值的和，最小取值肯定是大于其子节点的有值元素的和。因为只有确定了某个范围，其叶子节点的一些随机值的取法不会导致其余节点不符合题意。总的意思来说每个同父节点的空节点的取值互相有约束，其中一个节点的取值虽然满足自身，但是会使得其余节点不满足要求。举个例子：<br><img src="https://sfault-image.b0.upaiyun.com/654/145/654145038-5926bf63da00e_articlex" alt=""></p>
+<p>如果这样取值，则局部满足，会导致其他节点的取值不满足要求。所以在没约束的情况下可能会导致意想不到的结果。我们需要去确定这些范围。</p>
+<p>ps:这是我的一个回答</p>
+<h3 id="另外一个答主的回答"><a href="#另外一个答主的回答" class="headerlink" title="另外一个答主的回答"></a>另外一个答主的回答</h3><p>思想和我的差不多，就是确定范围<br>以下是他的回答内容：</p>
+<p>没有写具体代码，说一下思路吧<br>首先，把问题分为2步<br>Step1、确定非叶子节点的值</p>
+<p>Step2、确定叶子节点的值<br>先处理Step1，处理完Step1之后，Step2就不用多说了，根据父节点的值均分即可。</p>
+<p>对于Step1，</p>
+<p>step1-1： 由下向上遍历各个非叶子节点，通过对其子节点求和，确定其最小值。如最右侧的子树，最小值为5.5。</p>
+<p>step1-2： 由上向下，逐层确定非叶子节点，为方面描述，命名[100]为第一层，[10，20，?，?]为第二层，以此类推。根据step1-1的结果，第二层的最小值为[10，20，&gt;60,&gt;5.5],将100减去最小值之和，然后均分，结果为[10，20，62.25，7.75]</p>
+<p>step1-3： 同上，确定第三层，结果为[5.5, 4.5] [9.5, 5.25, 5.25] [60, 1.125, 1.125] [6.625，1.125]</p>
+<p>这里最后一组较特别，需要考虑到7.75分配的时候，其左下已经有5.5了，所以7.75里面可自由支配的数为7.75-5.5=2.25，将2.25均分到两边，结果[6.625，1.125]</p>
+<p>step1-4： 最后一层相信不用再罗嗦了，其实就是step2，均分下来就好。</p>
+<h3 id="三-总结"><a href="#三-总结" class="headerlink" title="三 总结"></a>三 总结</h3><p>题目还是挺有意思的,难度不是很大,主要的还是理解题目的意思,以及考虑到各种情况。</p>
+
+      </div>
+      <div class="post-copyright">
+    <p class="copyright-item">
+      <span>Author: </span>
+      <a href="http://ehds.github.io">DongSheng</a>
+    </p>
+    <p class="copyright-item">
+      <span>Link: </span>
+      <a href="http://ehds.github.io/2017/05/29/%E5%A4%9A%E5%8F%89%E6%A0%91%E6%B1%82%E5%80%BC%E9%97%AE%E9%A2%98/">http://ehds.github.io/2017/05/29/%E5%A4%9A%E5%8F%89%E6%A0%91%E6%B1%82%E5%80%BC%E9%97%AE%E9%A2%98/</a>
+    </p>
+    <p class="copyright-item">
+      <span>License: </span><a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/" target="_blank">知识共享署名-非商业性使用 4.0 国际许可协议</a>
+    </p>
+  </div>
+      <footer class="post-footer">
+        <div class="post-tags">
+            <a href="/tags/%E7%AE%97%E6%B3%95/">算法</a>
+            <a href="/tags/%E5%A4%9A%E5%8F%89%E6%A0%91/">多叉树</a>
+            </div>
+        
+        <nav class="post-nav"><a class="prev" href="/2017/06/21/%E4%BB%BB%E6%84%8FN%E4%B8%AA%E4%B8%8D%E5%90%8C%E6%95%B0%E7%9A%84%E9%80%86%E5%BA%8F%E5%AF%B9%E5%B9%B3%E5%9D%87%E5%80%BC/">
+        <i class="iconfont icon-left"></i>
+        <span class="prev-text nav-default">任意N个不同数的逆序对平均值</span>
+        <span class="prev-text nav-mobile">Prev</span>
+      </a>
+    <a class="next" href="/2017/04/26/%E8%87%AA%E5%B7%B1%E5%AE%9E%E7%8E%B0%E4%B8%80%E4%B8%AAnullptr/">
+        <span class="next-text nav-default">自己实现一个nullptr</span>
+        <span class="prev-text nav-mobile">Next</span>
+        <i class="iconfont icon-right"></i>
+      </a>
+    </nav></footer>
+    </article></div><div class="comments" id="comments"><div id="gitalk-container"></div>
+    </div></div>
+      </main>
+
+      <footer id="footer" class="footer"><div class="social-links"><a href="mailto:ehds@qq.com" class="iconfont icon-email" title="email"></a>
+        <a href="https://github.com/ehds" target="_blank" rel="noopener" class="iconfont icon-github" title="github"></a>
+        <a href="/atom.xml" class="iconfont icon-rss" title="rss"></a>
+    </div><div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a>
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    Theme - 
+    <a class="theme-link" href="https://github.com/ahonn/hexo-theme-even" target="_blank" rel="noopener">Even</a>
+  </span>
+
+  <span class="copyright-year">&copy;2017 - 2022<span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">DongSheng</span>
+  </span>
+</div>
+</footer>
+
+      <div class="back-to-top" id="back-to-top">
+        <i class="iconfont icon-up"></i>
+      </div>
+    </div>
+<script src="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.css"/>
+
+
+<script src="//cdn.jsdelivr.net/npm/js-md5@0.7.3/src/md5.min.js"></script>
+
+<script>
+  var gitalk = new Gitalk({
+    clientID: 'b75057216cc9401f28a0',
+    clientSecret: '6089f1aac89dc7f55aa1cceab307a61e85399bfc',
+    repo: 'ehds.github.io',
+    owner: 'ehds',
+    admin: ['ehds'],
+    id: md5(location.pathname),
+    
+      language: 'en',
+    
+    distractionFreeMode: 'true'
+  });
+  gitalk.render('gitalk-container');
+</script><script type="text/javascript" src="/lib/jquery/jquery.min.js"></script>
+  <script type="text/javascript" src="/lib/slideout/slideout.js"></script>
+  <script type="text/javascript" src="/lib/fancybox/jquery.fancybox.pack.js"></script>
+  <script type="text/javascript" src="/js/src/even.js?v=2.11.0"></script>
+</body>
+</html>

@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head><meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+<meta name="description" content="一个整数的2的幂次分解问题"/><meta name="keywords" content="算法, 2的幂次项问题, Ehds" /><link rel="alternate" href="/atom.xml" title="Ehds"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=2.11.0" />
+<link rel="canonical" href="http://ehds.github.io/2018/10/10/一个整数的2的幂次分解问题/"/>
+
+<link rel="stylesheet" type="text/css" href="/lib/fancybox/jquery.fancybox.css" /><script type="text/x-mathjax-config">
+    MathJax.Hub.Config({ tex2jax: { inlineMath: [['$','$'], ['\\(','\\)']] } });
+  </script>
+  <script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+<link rel="stylesheet" type="text/css" href="/css/style.css?v=2.11.0" />
+
+<script id="baidu_push">
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+<script>
+  window.config = {"leancloud":{"app_id":null,"app_key":null},"toc":true,"fancybox":true,"pjax":"","latex":true};
+</script>
+
+    <title>一个整数的2的幂次分解问题 - Ehds</title>
+  <meta name="generator" content="Hexo 4.2.1"><link rel="alternate" href="/atom.xml" title="Ehds" type="application/atom+xml">
+</head>
+
+  <body><div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/." class="logo">Ehds</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list"><a href="/">
+        <li class="mobile-menu-item">Home
+          </li>
+      </a><a href="/archives/">
+        <li class="mobile-menu-item">Archives
+          </li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">Tags
+          </li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">Categories
+          </li>
+      </a><a href="/about/">
+        <li class="mobile-menu-item">About
+          </li>
+      </a></ul>
+</nav>
+<div class="container" id="mobile-panel">
+      <header id="header" class="header"><div class="logo-wrapper">
+  <a href="/." class="logo">Ehds</a>
+</div>
+
+<nav class="site-navbar"><ul id="menu" class="menu"><li class="menu-item">
+          <a class="menu-item-link" href="/">
+            Home
+            </a>
+        </li>
+      <li class="menu-item">
+          <a class="menu-item-link" href="/archives/">
+            Archives
+            </a>
+        </li>
+      <li class="menu-item">
+          <a class="menu-item-link" href="/tags/">
+            Tags
+            </a>
+        </li>
+      <li class="menu-item">
+          <a class="menu-item-link" href="/categories/">
+            Categories
+            </a>
+        </li>
+      <li class="menu-item">
+          <a class="menu-item-link" href="/about/">
+            About
+            </a>
+        </li>
+      </ul></nav>
+</header>
+
+      <main id="main" class="main">
+        <div class="content-wrapper">
+          <div id="content" class="content"><article class="post">
+    <header class="post-header">
+      <h1 class="post-title">一个整数的2的幂次分解问题
+        </h1>
+
+      <div class="post-meta">
+        <span class="post-time">
+          2018-10-10
+        </span><span class="post-category">
+            <a href="/categories/%E7%BC%96%E7%A8%8B/">编程</a>
+            </span>
+        </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+    <h2 class="post-toc-title">Contents</h2>
+    <div class="post-toc-content">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-问题描述"><span class="toc-text">1. 问题描述</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-解法"><span class="toc-text">2. 解法</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#解法一"><span class="toc-text">解法一</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#解法二"><span class="toc-text">解法二</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#解法三"><span class="toc-text">解法三</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#总结"><span class="toc-text">总结</span></a></li></ol></li></ol>
+    </div>
+  </div><div class="post-content"><h2 id="1-问题描述"><a href="#1-问题描述" class="headerlink" title="1. 问题描述"></a>1. 问题描述</h2><p> 有这样一个数列<br>$$<br>1\ 2\  4 … 2^n…  其中n \ge 0<br>$$<br>其中每个数字仅有两个，给定一个正整数N，找到所有的可能解使得这些数字之和等于N。</p>
+<a id="more"></a>
+
+
+<h2 id="2-解法"><a href="#2-解法" class="headerlink" title="2. 解法"></a>2. 解法</h2><p>​    这个数列的每个元素恰好对应于2进制数的每一位所代表的大小，而这里每个数有两个，那么每一位上可以取{0，1，2}。</p>
+<p><strong>Example</strong></p>
+<p>​    例如数字6的二进制数为 <strong>0110</strong>(4+2)，那么按照上面的条件同样可以写为 <strong>0102</strong>（4+2x1）、 <strong>0022</strong>(2x2+2x1)。一共三种写法。</p>
+<h3 id="解法一"><a href="#解法一" class="headerlink" title="解法一"></a>解法一</h3><p>​    通过递归的方法计算所有的可能数，从最高为开始扫描。因为每一位可以取0，1，2，那么可以判断最高位这些值是否合法，如果合法且有剩余，那么剩余的值又可以往后面放，当剩余值为0的时候组合计数加一。从而形成递归的方式。程序代码略。</p>
+<h3 id="解法二"><a href="#解法二" class="headerlink" title="解法二"></a>解法二</h3><p>​    每个二进制数的每一位最多为1，那么如果我们将一个数分解为两个数之和，然后再通过计算这两个数的占用情况，就可以得到可以每位可以为2的情况。</p>
+<p>例如6可以分解为</p>
+<p>$$6+0 = 0110+0000=0110\\<br> 5+1 = 0101+0001 = 0102\\<br> 4+2 = 0100+0010 = 0110\\<br> 3+3 = 0011+0011 = 0022<br>$$<br>这里仅需进行到 $\lceil n/2\rceil$<br>因为往下计算是对称的，所以可以直接跳过。当然计算出来的结果可能有重复，然后把重复的值去除就行了。不难得出这个算法的时间复杂度为0(n).</p>
+<p>c++代码如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">#include &lt;iostream&gt;</span><br><span class="line">#include &lt;string&gt;</span><br><span class="line">#include &lt;bitset&gt;</span><br><span class="line">#include &lt;unordered_set&gt;</span><br><span class="line">&#x2F;* 问题描述</span><br><span class="line">	有这样的一个数列 1 2 4 ...2^n... n&gt;&#x3D;0</span><br><span class="line">	每个数字都有2个，给定一个数number</span><br><span class="line">	问有多少种组合使得这些数相加为number</span><br><span class="line">*&#x2F;</span><br><span class="line">&#x2F;&#x2F;这里假定数字占4个字节</span><br><span class="line">size_t solution(unsigned int n) &#123;</span><br><span class="line">	std::string res(32, &#39;0&#39;);</span><br><span class="line">    &#x2F;&#x2F;通过unordered_set去除重复元素</span><br><span class="line">	std::unordered_set&lt;std::string&gt; s;</span><br><span class="line">	for (int i &#x3D; 0; i &lt;&#x3D; n &#x2F; 2; i++) &#123;</span><br><span class="line">		std::bitset&lt;32&gt; v1(i);</span><br><span class="line">		std::bitset&lt;32&gt; v2(n-i);</span><br><span class="line">        &#x2F;&#x2F;获得结果字符串</span><br><span class="line">		for (int i &#x3D; 0; i &lt; 32; i++) &#123;</span><br><span class="line">			res[i] &#x3D; v1[i] + v2[i] + &#39;0&#39;;</span><br><span class="line">		&#125;</span><br><span class="line">		s.emplace(res);</span><br><span class="line">	&#125;</span><br><span class="line">	return s.size();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="解法三"><a href="#解法三" class="headerlink" title="解法三"></a>解法三</h3><p>解法二的思想是通过排列的方式进行的，下面是一些观察。</p>
+<ol>
+<li>对于二进制数<strong>1000</strong> 如果第一位数字<strong>1</strong>后面有零，代表没有数，那么第一位的<strong>1</strong>可以通过后一位的占用<strong>2</strong>来代替 即<strong>0200</strong>。同理如果第三位的<strong>2</strong>后面有零，那么<strong>2</strong>其中的一个<strong>1</strong>也可以向上面一样通过前一位占用<strong>2</strong>来代替，即<strong>0120</strong>。以此类推还可以写为<strong>0112</strong>。一共四种，我们可以得到如下规律对于这样的数<strong>1{0}*</strong>，一共有0的个数+<strong>1</strong>种可能。</li>
+<li>那么自然而然的想到通过每次截断<strong>1</strong>来计算可能数，如<strong>10001000</strong>通过划分<strong>1</strong>来得到可能数 <strong>1000/1000</strong>，“/” 前共有4种可能，后面有4种可能，那么一共有4x4的可能数。</li>
+<li>细心发现，上面的分析不是完全的可能数。因为“/”后面的<strong>1000</strong>变为<strong>0200</strong>的时候对于“/”前面来说又多了一位0，当然这里只会多一位0，可以看上面1的分析，所以“/”前面的仅能多往后移一位。<ol>
+<li>通过1和2的分析可以的出解法二的计算过程，当“/”前面的数占据后面多出来的0的时候，出现下列情况</li>
+</ol>
+</li>
+</ol>
+<p><img src="https://i.loli.net/2018/10/20/5bcadd444d8dc.png" alt=""></p>
+<pre><code>xxx为“/”后的数字首位为0的情况。</code></pre><p>​    首位为0的情况如何计算呢?可以通过当前</p>
+<p>​    综合分析，总共的组合数应该是1的结果加上3的结果。</p>
+<p><img src="https://i.loli.net/2018/10/20/5bcadd70e89ff.png" alt=""></p>
+<p>可以通过计算“/”前面为0的情况与斜杠后的情况的排列，加上前面占据“/”后一位0的情况。</p>
+<p>c++代码如下</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">size_t</span> <span class="title">solution2</span><span class="params">(<span class="keyword">unsigned</span> <span class="keyword">int</span> n)</span> </span>&#123;</span><br><span class="line">	<span class="comment">//方法通过记记录两个数并利用排列的方法计算 </span></span><br><span class="line">	<span class="comment">//本例的数字都是32位所以复杂度为O（32）</span></span><br><span class="line">	<span class="comment">//一般情况下 O（log n）n的二进制数长度</span></span><br><span class="line">	</span><br><span class="line">	<span class="comment">//首先把末尾的1给移走 因为最后一位为1不影响</span></span><br><span class="line">	<span class="keyword">while</span> (n &amp; <span class="number">1</span>) n &gt;&gt;= <span class="number">1</span>;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">auto</span> num = <span class="built_in">std</span>::<span class="built_in">bitset</span>&lt;<span class="number">32</span>&gt;(n);</span><br><span class="line"></span><br><span class="line">	<span class="keyword">size_t</span> count_zero = <span class="number">0</span>; <span class="comment">//记录从最低位开始扫描到1时所遍历到的0的个数</span></span><br><span class="line">	<span class="keyword">size_t</span> front_zero = <span class="number">0</span>;<span class="comment">//记录分割前一次的首位为0的数量，方便下次计算</span></span><br><span class="line">	<span class="keyword">size_t</span> pre_res = <span class="number">1</span>; <span class="comment">//分割前一次组合的结果</span></span><br><span class="line"></span><br><span class="line">	<span class="comment">//从最低到高扫描</span></span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">size_t</span> i = <span class="number">0</span>; i &lt; <span class="number">32</span>; i++)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="comment">//当前位为0的时候</span></span><br><span class="line">		<span class="keyword">if</span> (num[i] == <span class="number">0</span>) &#123; count_zero++; &#125;</span><br><span class="line">		<span class="comment">//当前位为1的时候 </span></span><br><span class="line">		<span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="comment">/*</span></span><br><span class="line"><span class="comment">            auto front_zero_temp = front_zero;</span></span><br><span class="line"><span class="comment">            //结果为 1 和 3 的分析结果</span></span><br><span class="line"><span class="comment">            pre_res = (count_zero+1)*pre_res+front_zero_temp;</span></span><br><span class="line"><span class="comment">            //计算当前首位为0的情况，方便下次使用</span></span><br><span class="line"><span class="comment">            front_zero = count_zero*pre_res+front_zero_temp</span></span><br><span class="line"><span class="comment">            由于这样会引入新的局部变量，简化为下面的式子</span></span><br><span class="line"><span class="comment">            */</span></span><br><span class="line">            </span><br><span class="line">			<span class="comment">//计算首位为0的情况，方便下一次的计算</span></span><br><span class="line">			front_zero = (count_zero)*pre_res + front_zero;</span><br><span class="line">			<span class="comment">//本次切割总共的写法</span></span><br><span class="line">			pre_res = front_zero+pre_res;</span><br><span class="line">			<span class="comment">//归零计数</span></span><br><span class="line">			count_zero = <span class="number">0</span>;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> pre_res;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>不难分析出时间复杂度O(logn)</p>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>​    解法二是一个很优美的解，简单优雅，通过这种分解的方法还可以不仅课计算个数为2的解还可以解其他个数的解。只需要将分解的因子变为相应的个数。</p>
+<p>​    解法三是通过一些分析和总结规律得出的，时间复杂度比较低，但是不怎么好扩展成其他的解。</p>
+<p>（完）</p>
+<p>​                                                                                        2018.10.19</p>
+<p>created by ehds</p>
+
+      </div>
+      <div class="post-copyright">
+    <p class="copyright-item">
+      <span>Author: </span>
+      <a href="http://ehds.github.io">DongSheng</a>
+    </p>
+    <p class="copyright-item">
+      <span>Link: </span>
+      <a href="http://ehds.github.io/2018/10/10/%E4%B8%80%E4%B8%AA%E6%95%B4%E6%95%B0%E7%9A%842%E7%9A%84%E5%B9%82%E6%AC%A1%E5%88%86%E8%A7%A3%E9%97%AE%E9%A2%98/">http://ehds.github.io/2018/10/10/%E4%B8%80%E4%B8%AA%E6%95%B4%E6%95%B0%E7%9A%842%E7%9A%84%E5%B9%82%E6%AC%A1%E5%88%86%E8%A7%A3%E9%97%AE%E9%A2%98/</a>
+    </p>
+    <p class="copyright-item">
+      <span>License: </span><a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/" target="_blank">知识共享署名-非商业性使用 4.0 国际许可协议</a>
+    </p>
+  </div>
+      <footer class="post-footer">
+        <div class="post-tags">
+            <a href="/tags/%E7%AE%97%E6%B3%95/">算法</a>
+            <a href="/tags/2%E7%9A%84%E5%B9%82%E6%AC%A1%E9%A1%B9%E9%97%AE%E9%A2%98/">2的幂次项问题</a>
+            </div>
+        
+        <nav class="post-nav"><a class="prev" href="/2018/10/25/Bloom%E5%92%8CCuckoo%E8%BF%87%E6%BB%A4%E5%99%A8%E7%9A%84%E6%80%A7%E8%83%BD%E6%AF%94%E8%BE%83/">
+        <i class="iconfont icon-left"></i>
+        <span class="prev-text nav-default">Bloom和Cuckoo过滤器的性能比较</span>
+        <span class="prev-text nav-mobile">Prev</span>
+      </a>
+    <a class="next" href="/2018/08/07/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0-%E5%91%A8%E5%BF%97%E5%8D%8E-%E7%AC%94%E8%AE%B0/">
+        <span class="next-text nav-default">机器学习(周志华)笔记</span>
+        <span class="prev-text nav-mobile">Next</span>
+        <i class="iconfont icon-right"></i>
+      </a>
+    </nav></footer>
+    </article></div><div class="comments" id="comments"><div id="gitalk-container"></div>
+    </div></div>
+      </main>
+
+      <footer id="footer" class="footer"><div class="social-links"><a href="mailto:ehds@qq.com" class="iconfont icon-email" title="email"></a>
+        <a href="https://github.com/ehds" target="_blank" rel="noopener" class="iconfont icon-github" title="github"></a>
+        <a href="/atom.xml" class="iconfont icon-rss" title="rss"></a>
+    </div><div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a>
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    Theme - 
+    <a class="theme-link" href="https://github.com/ahonn/hexo-theme-even" target="_blank" rel="noopener">Even</a>
+  </span>
+
+  <span class="copyright-year">&copy;2017 - 2022<span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">DongSheng</span>
+  </span>
+</div>
+</footer>
+
+      <div class="back-to-top" id="back-to-top">
+        <i class="iconfont icon-up"></i>
+      </div>
+    </div>
+<script src="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.css"/>
+
+
+<script src="//cdn.jsdelivr.net/npm/js-md5@0.7.3/src/md5.min.js"></script>
+
+<script>
+  var gitalk = new Gitalk({
+    clientID: 'b75057216cc9401f28a0',
+    clientSecret: '6089f1aac89dc7f55aa1cceab307a61e85399bfc',
+    repo: 'ehds.github.io',
+    owner: 'ehds',
+    admin: ['ehds'],
+    id: md5(location.pathname),
+    
+      language: 'en',
+    
+    distractionFreeMode: 'true'
+  });
+  gitalk.render('gitalk-container');
+</script><script type="text/javascript" src="/lib/jquery/jquery.min.js"></script>
+  <script type="text/javascript" src="/lib/slideout/slideout.js"></script>
+  <script type="text/javascript" src="/lib/fancybox/jquery.fancybox.pack.js"></script>
+  <script type="text/javascript" src="/js/src/even.js?v=2.11.0"></script>
+</body>
+</html>

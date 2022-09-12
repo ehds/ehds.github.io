@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head><meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+<meta name="description" content="Q-Prop论文阅读笔记"/><meta name="keywords" content="深度学习, q-props, Ehds" /><link rel="alternate" href="/atom.xml" title="Ehds"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=2.11.0" />
+<link rel="canonical" href="http://ehds.github.io/2021/01/05/qprop/"/>
+
+<link rel="stylesheet" type="text/css" href="/lib/fancybox/jquery.fancybox.css" /><script type="text/x-mathjax-config">
+    MathJax.Hub.Config({ tex2jax: { inlineMath: [['$','$'], ['\\(','\\)']] } });
+  </script>
+  <script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+<link rel="stylesheet" type="text/css" href="/css/style.css?v=2.11.0" />
+
+<script id="baidu_push">
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+<script>
+  window.config = {"leancloud":{"app_id":null,"app_key":null},"toc":true,"fancybox":true,"pjax":"","latex":true};
+</script>
+
+    <title>Q-Prop论文阅读笔记 - Ehds</title>
+  <meta name="generator" content="Hexo 4.2.1"><link rel="alternate" href="/atom.xml" title="Ehds" type="application/atom+xml">
+</head>
+
+  <body><div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/." class="logo">Ehds</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list"><a href="/">
+        <li class="mobile-menu-item">Home
+          </li>
+      </a><a href="/archives/">
+        <li class="mobile-menu-item">Archives
+          </li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">Tags
+          </li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">Categories
+          </li>
+      </a><a href="/about/">
+        <li class="mobile-menu-item">About
+          </li>
+      </a></ul>
+</nav>
+<div class="container" id="mobile-panel">
+      <header id="header" class="header"><div class="logo-wrapper">
+  <a href="/." class="logo">Ehds</a>
+</div>
+
+<nav class="site-navbar"><ul id="menu" class="menu"><li class="menu-item">
+          <a class="menu-item-link" href="/">
+            Home
+            </a>
+        </li>
+      <li class="menu-item">
+          <a class="menu-item-link" href="/archives/">
+            Archives
+            </a>
+        </li>
+      <li class="menu-item">
+          <a class="menu-item-link" href="/tags/">
+            Tags
+            </a>
+        </li>
+      <li class="menu-item">
+          <a class="menu-item-link" href="/categories/">
+            Categories
+            </a>
+        </li>
+      <li class="menu-item">
+          <a class="menu-item-link" href="/about/">
+            About
+            </a>
+        </li>
+      </ul></nav>
+</header>
+
+      <main id="main" class="main">
+        <div class="content-wrapper">
+          <div id="content" class="content"><article class="post">
+    <header class="post-header">
+      <h1 class="post-title">Q-Prop论文阅读笔记
+        </h1>
+
+      <div class="post-meta">
+        <span class="post-time">
+          2021-01-05
+        </span><span class="post-category">
+            <a href="/categories/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/">深度学习</a>
+            </span>
+        </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+    <h2 class="post-toc-title">Contents</h2>
+    <div class="post-toc-content">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Control-Variate"><span class="toc-text">Control Variate</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Q-Prop-的理解"><span class="toc-text">Q-Prop 的理解</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-为什么要选择action-dependet的控制变量"><span class="toc-text">1. 为什么要选择action-dependet的控制变量</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-文中-6-式似乎不是control-variate的形式？"><span class="toc-text">2. 文中(6)式似乎不是control variate的形式？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-eta-s-t-控制因子为什么是和状态有关的变量？"><span class="toc-text">3. $\eta(s_t)$控制因子为什么是和状态有关的变量？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-这么做有什么好处"><span class="toc-text">4. 这么做有什么好处</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#参考文献"><span class="toc-text">参考文献</span></a></li></ol>
+    </div>
+  </div><div class="post-content"><p>Q-Prop利用Control Variate来减小强化学习中由于采样所带来的方差较高的问题。</p>
+<a id="more"></a>
+<h2 id="Control-Variate"><a href="#Control-Variate" class="headerlink" title="Control Variate"></a>Control Variate</h2><p>Monte Carlo方法是一种可以通过采样方法来解积分的方法，但是如果当我们采样的个数比较少的情况下，往往方差较高。具体可以参考<a href="https://zhuanlan.zhihu.com/p/146144853" target="_blank" rel="noopener">文献1</a><br>Control Variate 是一种用于解决Monte Carlo方法带来的方差较高的问题，其做法是在原有估计的基础上，加上一个控制参数，例如我们想要估计m变量的期望$E(m)$，那么我们可以估计$m^{\star} = c(t-\tau)$,其中t是另一个分布的变量，假设$\tau = E(t)$我们是已知的（或者相对m来说更好计算)，很容易得知$m^{\star}$是$m$的无偏估计。<br>而加了这个控制变量之后，如果c的选择比较合理，且$t$与$m$有一定的相关性，则$Var(m^{\star})$是非常小的，直观的解释是因为$m$在估计的时候有一定的方差（扰动因子），而$t$是一个和$m$相关的变量，那么具有类似的扰动因子，而$E(t)$是已知的，那么$t-E(t)$就是$t$扰动因子的量，然后$m$减去一定量($c$)的这个扰动因子，这样相当于就减少了$m$的扰动，从而降低方差。具体的数学证明参考<a href="https://en.wikipedia.org/w/index.php?title=Control_variates&oldid=969628525" target="_blank" rel="noopener">文献2</a></p>
+<h2 id="Q-Prop-的理解"><a href="#Q-Prop-的理解" class="headerlink" title="Q-Prop 的理解"></a>Q-Prop 的理解</h2><p>qprop[文献3] 的提出主要解决了强化学习中，Reward的要么可能方差大，无偏，要么方差小，但是有偏的问题，具体就是采用Control Variate的方法，加上泰勒展开的trick方式。<br>论文里面已经对整个推导过程阐述的很详细，这里主要针对几个问题提出自己的理解：</p>
+<h3 id="1-为什么要选择action-dependet的控制变量"><a href="#1-为什么要选择action-dependet的控制变量" class="headerlink" title="1. 为什么要选择action-dependet的控制变量"></a>1. 为什么要选择action-dependet的控制变量</h3><p>因为我们在计算梯度的时候，梯度所代表的意思是在当前状态$s_i$下，选择动作$a_i$，是否对整体期望的reawrd有帮助，并且我们在计算$V(s_i)$的时候也是对当前状态下所有$a_i$的积分，所以方差的来源是包含$a_i$的，所以在选择控制变量时需要的是 action-depent的，论文里面选择的是$Q_w(s_i,a_i)$。</p>
+<h3 id="2-文中-6-式似乎不是control-variate的形式？"><a href="#2-文中-6-式似乎不是control-variate的形式？" class="headerlink" title="2. 文中(6)式似乎不是control variate的形式？"></a>2. 文中(6)式似乎不是control variate的形式？</h3><p>我的理解是如果把$\bar{f}(s_t,a_t)$看作控制变量，$c=-1$, 就变成了式（6）的形式了</p>
+<h3 id="3-eta-s-t-控制因子为什么是和状态有关的变量？"><a href="#3-eta-s-t-控制因子为什么是和状态有关的变量？" class="headerlink" title="3. $\eta(s_t)$控制因子为什么是和状态有关的变量？"></a>3. $\eta(s_t)$控制因子为什么是和状态有关的变量？</h3><p>参考文献2中证明如果 控制因子为<br>$$c=\frac{\operatorname{Cov}(m, t)}{\operatorname{Var}(t)}$$<br>且$m^{\star}$的方差为:</p>
+<p>$$\begin{aligned}<br>\operatorname{Var}\left(m^{\star}\right) &amp;=\operatorname{Var}(m)-\frac{[\operatorname{Cov}(m, t)]^{2}}{\operatorname{Var}(t)} \\<br>&amp;=\left(1-\rho_{m, t}^{2}\right) \operatorname{Var}(m)<br>\end{aligned}$$</p>
+<p>而文中关于斜方差和方差的计算如下<br>$$<br>\operatorname{Cov}{\boldsymbol{a}{t}}(\hat{A}, \bar{A}) =\mathbb{E}{\pi}\left[\hat{A}\left(\boldsymbol{s}{t}, \boldsymbol{a}{t}\right) \bar{A}\left(\boldsymbol{s}{t}, \boldsymbol{a}{t}\right)\right]<br>$$<br>方差如下：<br>$$<br>\begin{aligned}<br>\operatorname{Var_{a_t(\bar{A})}} &amp;= \mathbb{E_{\pi}}[\bar{A}(s_t, a_t)^2]\\<br>&amp;= \nabla_{a} Q_w(s_t, a)|_{a<br>= {\mu}_{\theta}(s_t)} ^{T} \Sigma_{\theta}(s_t) \nabla_{a} Q_w(s_t, a)|_{a<br>= {\mu}_{\theta}(s_t)}<br>\end{aligned}<br>$$</p>
+<p>可以看出两者都是和状态无关的变量</p>
+<h3 id="4-这么做有什么好处"><a href="#4-这么做有什么好处" class="headerlink" title="4. 这么做有什么好处"></a>4. 这么做有什么好处</h3><p>上面只是说了可以这么做，但是这么做有什么好处？首先$Q_w$我们不管它准不准，只要它能把方差的部分给计算出来，$\bar{Q}$能够减去这部分方差，这样就可以做到无偏且方差较小，那么$Q_w$怎么计算，这部分就可以通过off-policy的方式先把它给计算出来，这样$Q_w$的期望就计算出来了，保证了无偏。然后在梯度计算的过程中，有因为$Q_w$是action-depent的，那么就可以去捕捉干扰因子，然后再减去这部分干扰因子，就可以极大的减小梯度的方差。而这部分训练可以利用on-policy来计算，Amazing。</p>
+<h2 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h2><p>[1]《蒙特卡洛积分》, 知乎专栏. <a href="https://zhuanlan.zhihu.com/p/146144853" target="_blank" rel="noopener">https://zhuanlan.zhihu.com/p/146144853</a> (见于 1月 05, 2021).<br>[2]《Control variates》, Wikipedia. 7月 26, 2020, 见于: 1月 06, 2021. [在线]. 载于: <a href="https://en.wikipedia.org/w/index.php?title=Control_variates&amp;oldid=969628525" target="_blank" rel="noopener">https://en.wikipedia.org/w/index.php?title=Control_variates&amp;oldid=969628525</a>.<br>[3]S. Gu, T. Lillicrap, Z. Ghahramani, R. E. Turner和S. Levine, 《Q-Prop: Sample-Efficient Policy Gradient with An Off-Policy Critic》, arXiv:1611.02247 [cs], 2月 2017, 见于: 1月 04, 2021. [在线]. 载于: <a href="http://arxiv.org/abs/1611.02247" target="_blank" rel="noopener">http://arxiv.org/abs/1611.02247</a>.</p>
+
+      </div>
+      <div class="post-copyright">
+    <p class="copyright-item">
+      <span>Author: </span>
+      <a href="http://ehds.github.io">DongSheng</a>
+    </p>
+    <p class="copyright-item">
+      <span>Link: </span>
+      <a href="http://ehds.github.io/2021/01/05/qprop/">http://ehds.github.io/2021/01/05/qprop/</a>
+    </p>
+    <p class="copyright-item">
+      <span>License: </span><a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/" target="_blank">知识共享署名-非商业性使用 4.0 国际许可协议</a>
+    </p>
+  </div>
+      <footer class="post-footer">
+        <div class="post-tags">
+            <a href="/tags/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/">深度学习</a>
+            <a href="/tags/q-props/">q-props</a>
+            </div>
+        
+        <nav class="post-nav"><a class="prev" href="/2021/01/21/docker_systemctl/">
+        <i class="iconfont icon-left"></i>
+        <span class="prev-text nav-default">如何在Docker里面使用systemctl</span>
+        <span class="prev-text nav-mobile">Prev</span>
+      </a>
+    <a class="next" href="/2020/12/26/interpretation-graph-convolution/">
+        <span class="next-text nav-default">从另一个角度解释图卷积</span>
+        <span class="prev-text nav-mobile">Next</span>
+        <i class="iconfont icon-right"></i>
+      </a>
+    </nav></footer>
+    </article></div><div class="comments" id="comments"><div id="gitalk-container"></div>
+    </div></div>
+      </main>
+
+      <footer id="footer" class="footer"><div class="social-links"><a href="mailto:ehds@qq.com" class="iconfont icon-email" title="email"></a>
+        <a href="https://github.com/ehds" target="_blank" rel="noopener" class="iconfont icon-github" title="github"></a>
+        <a href="/atom.xml" class="iconfont icon-rss" title="rss"></a>
+    </div><div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a>
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    Theme - 
+    <a class="theme-link" href="https://github.com/ahonn/hexo-theme-even" target="_blank" rel="noopener">Even</a>
+  </span>
+
+  <span class="copyright-year">&copy;2017 - 2022<span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">DongSheng</span>
+  </span>
+</div>
+</footer>
+
+      <div class="back-to-top" id="back-to-top">
+        <i class="iconfont icon-up"></i>
+      </div>
+    </div>
+<script src="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.css"/>
+
+
+<script src="//cdn.jsdelivr.net/npm/js-md5@0.7.3/src/md5.min.js"></script>
+
+<script>
+  var gitalk = new Gitalk({
+    clientID: 'b75057216cc9401f28a0',
+    clientSecret: '6089f1aac89dc7f55aa1cceab307a61e85399bfc',
+    repo: 'ehds.github.io',
+    owner: 'ehds',
+    admin: ['ehds'],
+    id: md5(location.pathname),
+    
+      language: 'en',
+    
+    distractionFreeMode: 'true'
+  });
+  gitalk.render('gitalk-container');
+</script><script type="text/javascript" src="/lib/jquery/jquery.min.js"></script>
+  <script type="text/javascript" src="/lib/slideout/slideout.js"></script>
+  <script type="text/javascript" src="/lib/fancybox/jquery.fancybox.pack.js"></script>
+  <script type="text/javascript" src="/js/src/even.js?v=2.11.0"></script>
+</body>
+</html>

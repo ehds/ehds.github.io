@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head><meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+<meta name="description" content="从零开始的 JSON 库教程"/><meta name="keywords" content="JSON, c/c++, 教程, 转载, 编程, Ehds" /><link rel="alternate" href="/atom.xml" title="Ehds"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=2.11.0" />
+<link rel="canonical" href="http://ehds.github.io/2018/01/02/从零开始的-JSON-库教程/"/>
+
+<link rel="stylesheet" type="text/css" href="/lib/fancybox/jquery.fancybox.css" /><script type="text/x-mathjax-config">
+    MathJax.Hub.Config({ tex2jax: { inlineMath: [['$','$'], ['\\(','\\)']] } });
+  </script>
+  <script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+<link rel="stylesheet" type="text/css" href="/css/style.css?v=2.11.0" />
+
+<script id="baidu_push">
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+<script>
+  window.config = {"leancloud":{"app_id":null,"app_key":null},"toc":true,"fancybox":true,"pjax":"","latex":true};
+</script>
+
+    <title>从零开始的 JSON 库教程 - Ehds</title>
+  <meta name="generator" content="Hexo 4.2.1"><link rel="alternate" href="/atom.xml" title="Ehds" type="application/atom+xml">
+</head>
+
+  <body><div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/." class="logo">Ehds</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list"><a href="/">
+        <li class="mobile-menu-item">Home
+          </li>
+      </a><a href="/archives/">
+        <li class="mobile-menu-item">Archives
+          </li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">Tags
+          </li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">Categories
+          </li>
+      </a><a href="/about/">
+        <li class="mobile-menu-item">About
+          </li>
+      </a></ul>
+</nav>
+<div class="container" id="mobile-panel">
+      <header id="header" class="header"><div class="logo-wrapper">
+  <a href="/." class="logo">Ehds</a>
+</div>
+
+<nav class="site-navbar"><ul id="menu" class="menu"><li class="menu-item">
+          <a class="menu-item-link" href="/">
+            Home
+            </a>
+        </li>
+      <li class="menu-item">
+          <a class="menu-item-link" href="/archives/">
+            Archives
+            </a>
+        </li>
+      <li class="menu-item">
+          <a class="menu-item-link" href="/tags/">
+            Tags
+            </a>
+        </li>
+      <li class="menu-item">
+          <a class="menu-item-link" href="/categories/">
+            Categories
+            </a>
+        </li>
+      <li class="menu-item">
+          <a class="menu-item-link" href="/about/">
+            About
+            </a>
+        </li>
+      </ul></nav>
+</header>
+
+      <main id="main" class="main">
+        <div class="content-wrapper">
+          <div id="content" class="content"><article class="post">
+    <header class="post-header">
+      <h1 class="post-title">从零开始的 JSON 库教程
+        </h1>
+
+      <div class="post-meta">
+        <span class="post-time">
+          2018-01-02
+        </span><span class="post-category">
+            <a href="/categories/%E7%BC%96%E7%A8%8B/">编程</a>
+            </span>
+        </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+    <h2 class="post-toc-title">Contents</h2>
+    <div class="post-toc-content">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#对象与目标"><span class="toc-text">对象与目标</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#教程大纲"><span class="toc-text">教程大纲</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#关于作者"><span class="toc-text">关于作者</span></a></li></ol>
+    </div>
+  </div><div class="post-content"><ul>
+<li><a href="https://github.com/miloyip" target="_blank" rel="noopener">Milo Yip</a></li>
+<li>2016/9/15</li>
+</ul>
+<p>也许有很多同学上过 C/C++ 的课后，可以完成一些简单的编程练习，又能在一些网站刷题，但对于如何开发有实际用途的程序可能感到束手无策。本教程希望能以一个简单的项目开发形式，让同学能逐步理解如何从无到有去开发软件。</p>
+<p>为什么选择 JSON？因为它足够简单，除基本编程外不需大量技术背景知识。JSON 有标准，可按照标准逐步实现。JSON 也是实际在许多应用上会使用的格式，所以才会有大量的开源库。</p>
+<p>这是一个免费、开源的教程，如果你喜欢，也可以打赏鼓励。因为工作及家庭因素，不能保证每篇文章的首发时间，请各为见谅。</p>
+<a id="more"></a>
+<h2 id="对象与目标"><a href="#对象与目标" class="headerlink" title="对象与目标"></a>对象与目标</h2><p>教程对象：学习过基本 C/C++ 编程的同学。</p>
+<p>通过这个教程，同学可以了解如何从零开始写一个 JSON 库，其特性如下：</p>
+<ul>
+<li>符合标准的 JSON 解析器和生成器</li>
+<li>手写的递归下降解析器（recursive descent parser）</li>
+<li>使用标准 C 语言（C89）</li>
+<li>跨平台／编译器（如 Windows／Linux／OS X，vc／gcc／clang）</li>
+<li>仅支持 UTF-8 JSON 文本</li>
+<li>仅支持以 <code>double</code> 存储 JSON number 类型</li>
+<li>解析器和生成器的代码合共少于 500 行</li>
+</ul>
+<p>除了围绕 JSON 作为例子，希望能在教程中讲述一些课题：</p>
+<ul>
+<li>测试驱动开发（test driven development, TDD）</li>
+<li>C 语言编程风格</li>
+<li>数据结构</li>
+<li>API 设计</li>
+<li>断言</li>
+<li>Unicode</li>
+<li>浮点数</li>
+<li>Github、CMake、valgrind、Doxygen 等工具</li>
+</ul>
+<h2 id="教程大纲"><a href="#教程大纲" class="headerlink" title="教程大纲"></a>教程大纲</h2><p>本教程预计分为 9 个单元，第 1-8 个单元附带练习和解答。</p>
+<ol>
+<li><a href="tutorial01/tutorial01.md">启程</a>（2016/9/15 完成）：编译环境、JSON 简介、测试驱动、解析器主要函数及各数据结构。练习 JSON 布尔类型的解析。<a href="tutorial01_answer/tutorial01_answer.md">启程解答篇</a>（2016/9/17 完成）。</li>
+<li><a href="tutorial02/tutorial02.md">解析数字</a>（2016/9/18 完成）：JSON number 的语法。练习 JSON number 类型的校验。<a href="tutorial02_answer/tutorial02_answer.md">解析数字解答篇</a>（2016/9/20 完成）。</li>
+<li><a href="tutorial03/tutorial03.md">解析字符串</a>（2016/9/22 完成）：使用 union 存储 variant、自动扩展的堆栈、JSON string 的语法、valgrind。练习最基本的 JSON string 类型的解析、内存释放。<a href="tutorial03_answer/tutorial03_answer.md">解析字符串解答篇</a>（2016/9/27 完成）。</li>
+<li><a href="tutorial04/tutorial04.md">Unicode</a>（2016/10/2 完成）：Unicode 和 UTF-8 的基本知识、JSON string 的 unicode 处理。练习完成 JSON string 类型的解析。<a href="tutorial04_answer/tutorial04_answer.md">Unicode 解答篇</a>（2016/10/6 完成）。</li>
+<li><a href="tutorial05/tutorial05.md">解析数组</a>（2016/10/7 完成）：JSON array 的语法。练习完成 JSON array 类型的解析、相关内存释放。<a href="tutorial05_answer/tutorial05_answer.md">解析数组解答篇</a>（2016/10/13 完成）。</li>
+<li><a href="tutorial06/tutorial06.md">解析对象</a>（2016/10/29 完成）：JSON object 的语法、重构 string 解析函数。练习完成 JSON object 的解析、相关内存释放。<a href="tutorial06_answer/tutorial06_answer.md">解析对象解答篇</a>（2016/11/15 完成）。</li>
+<li><a href="tutorial07/tutorial07.md">生成器</a>（2016/12/20 完成）：JSON 生成过程、注意事项。练习完成 JSON 生成器。<a href="tutorial07_answer/tutorial07_answer.md">生成器解答篇</a>（2017/1/5 完成）</li>
+<li>访问：JSON array／object 的访问及修改。练习完成相关功能。</li>
+<li>终点及新开始：加入 nativejson-benchmark 测试，与 RapidJSON 对比及展望。</li>
+</ol>
+<h2 id="关于作者"><a href="#关于作者" class="headerlink" title="关于作者"></a>关于作者</h2><p>叶劲峰（Milo Yip）现任腾讯 T4 专家、互动娱乐事业群魔方工作室群前台技术总监。他获得香港大学认知科学学士（BCogSc）、香港中文大学系统工程及工程管理哲学硕士（MPhil）。他是《游戏引擎架构》译者、《C++ Primer 中文版（第五版）》审校。他曾参与《天涯明月刀》、《斗战神》、《爱丽丝：疯狂回归》、《美食从天降》、《王子传奇》等游戏项目，以及多个游戏引擎及中间件的研发。他是开源项目 <a href="https://github.com/miloyip/rapidjson" target="_blank" rel="noopener">RapidJSON</a> 的作者，开发 <a href="https://github.com/miloyip/nativejson-benchmark" target="_blank" rel="noopener">nativejson-benchmark</a> 比较 41 个开源原生 JSON 库的标准符合程度及性能。他在 1990 年学习 C 语言，1995 年开始使用 C++ 于各种项目。</p>
+
+      </div>
+      <div class="post-copyright">
+    <p class="copyright-item">
+      <span>Author: </span>
+      <a href="http://ehds.github.io">DongSheng</a>
+    </p>
+    <p class="copyright-item">
+      <span>Link: </span>
+      <a href="http://ehds.github.io/2018/01/02/%E4%BB%8E%E9%9B%B6%E5%BC%80%E5%A7%8B%E7%9A%84-JSON-%E5%BA%93%E6%95%99%E7%A8%8B/">http://ehds.github.io/2018/01/02/%E4%BB%8E%E9%9B%B6%E5%BC%80%E5%A7%8B%E7%9A%84-JSON-%E5%BA%93%E6%95%99%E7%A8%8B/</a>
+    </p>
+    <p class="copyright-item">
+      <span>License: </span><a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/" target="_blank">知识共享署名-非商业性使用 4.0 国际许可协议</a>
+    </p>
+  </div>
+      <footer class="post-footer">
+        <div class="post-tags">
+            <a href="/tags/JSON/">JSON</a>
+            <a href="/tags/c-c/">c/c++</a>
+            <a href="/tags/%E6%95%99%E7%A8%8B/">教程</a>
+            <a href="/tags/%E8%BD%AC%E8%BD%BD/">转载</a>
+            <a href="/tags/%E7%BC%96%E7%A8%8B/">编程</a>
+            </div>
+        
+        <nav class="post-nav"><a class="prev" href="/2018/04/10/EliminationGame/">
+        <i class="iconfont icon-left"></i>
+        <span class="prev-text nav-default">Elimination Game 题解</span>
+        <span class="prev-text nav-mobile">Prev</span>
+      </a>
+    <a class="next" href="/2017/12/28/%E3%80%8A%E5%87%BA%E5%B8%88%E8%A1%A8%E3%80%8B%E8%8B%B1%E6%96%87%E7%89%88/">
+        <span class="next-text nav-default">《出师表》英文版</span>
+        <span class="prev-text nav-mobile">Next</span>
+        <i class="iconfont icon-right"></i>
+      </a>
+    </nav></footer>
+    </article></div><div class="comments" id="comments"><div id="gitalk-container"></div>
+    </div></div>
+      </main>
+
+      <footer id="footer" class="footer"><div class="social-links"><a href="mailto:ehds@qq.com" class="iconfont icon-email" title="email"></a>
+        <a href="https://github.com/ehds" target="_blank" rel="noopener" class="iconfont icon-github" title="github"></a>
+        <a href="/atom.xml" class="iconfont icon-rss" title="rss"></a>
+    </div><div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a>
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    Theme - 
+    <a class="theme-link" href="https://github.com/ahonn/hexo-theme-even" target="_blank" rel="noopener">Even</a>
+  </span>
+
+  <span class="copyright-year">&copy;2017 - 2022<span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">DongSheng</span>
+  </span>
+</div>
+</footer>
+
+      <div class="back-to-top" id="back-to-top">
+        <i class="iconfont icon-up"></i>
+      </div>
+    </div>
+<script src="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.css"/>
+
+
+<script src="//cdn.jsdelivr.net/npm/js-md5@0.7.3/src/md5.min.js"></script>
+
+<script>
+  var gitalk = new Gitalk({
+    clientID: 'b75057216cc9401f28a0',
+    clientSecret: '6089f1aac89dc7f55aa1cceab307a61e85399bfc',
+    repo: 'ehds.github.io',
+    owner: 'ehds',
+    admin: ['ehds'],
+    id: md5(location.pathname),
+    
+      language: 'en',
+    
+    distractionFreeMode: 'true'
+  });
+  gitalk.render('gitalk-container');
+</script><script type="text/javascript" src="/lib/jquery/jquery.min.js"></script>
+  <script type="text/javascript" src="/lib/slideout/slideout.js"></script>
+  <script type="text/javascript" src="/lib/fancybox/jquery.fancybox.pack.js"></script>
+  <script type="text/javascript" src="/js/src/even.js?v=2.11.0"></script>
+</body>
+</html>

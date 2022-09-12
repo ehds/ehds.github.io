@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head><meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+<meta name="description" content="Raft 进行单节点变换时遇到的问题"/><meta name="keywords" content="raft, 分布式, Ehds" /><link rel="alternate" href="/atom.xml" title="Ehds"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=2.11.0" />
+<link rel="canonical" href="http://ehds.github.io/2021/05/11/raft-single-peer-change/"/>
+
+<link rel="stylesheet" type="text/css" href="/lib/fancybox/jquery.fancybox.css" /><script type="text/x-mathjax-config">
+    MathJax.Hub.Config({ tex2jax: { inlineMath: [['$','$'], ['\\(','\\)']] } });
+  </script>
+  <script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+<link rel="stylesheet" type="text/css" href="/css/style.css?v=2.11.0" />
+
+<script id="baidu_push">
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+<script>
+  window.config = {"leancloud":{"app_id":null,"app_key":null},"toc":true,"fancybox":true,"pjax":"","latex":true};
+</script>
+
+    <title>Raft 进行单节点变换时遇到的问题 - Ehds</title>
+  <meta name="generator" content="Hexo 4.2.1"><link rel="alternate" href="/atom.xml" title="Ehds" type="application/atom+xml">
+</head>
+
+  <body><div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/." class="logo">Ehds</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list"><a href="/">
+        <li class="mobile-menu-item">Home
+          </li>
+      </a><a href="/archives/">
+        <li class="mobile-menu-item">Archives
+          </li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">Tags
+          </li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">Categories
+          </li>
+      </a><a href="/about/">
+        <li class="mobile-menu-item">About
+          </li>
+      </a></ul>
+</nav>
+<div class="container" id="mobile-panel">
+      <header id="header" class="header"><div class="logo-wrapper">
+  <a href="/." class="logo">Ehds</a>
+</div>
+
+<nav class="site-navbar"><ul id="menu" class="menu"><li class="menu-item">
+          <a class="menu-item-link" href="/">
+            Home
+            </a>
+        </li>
+      <li class="menu-item">
+          <a class="menu-item-link" href="/archives/">
+            Archives
+            </a>
+        </li>
+      <li class="menu-item">
+          <a class="menu-item-link" href="/tags/">
+            Tags
+            </a>
+        </li>
+      <li class="menu-item">
+          <a class="menu-item-link" href="/categories/">
+            Categories
+            </a>
+        </li>
+      <li class="menu-item">
+          <a class="menu-item-link" href="/about/">
+            About
+            </a>
+        </li>
+      </ul></nav>
+</header>
+
+      <main id="main" class="main">
+        <div class="content-wrapper">
+          <div id="content" class="content"><article class="post">
+    <header class="post-header">
+      <h1 class="post-title">Raft 进行单节点变换时遇到的问题
+        </h1>
+
+      <div class="post-meta">
+        <span class="post-time">
+          2021-05-11
+        </span><span class="post-category">
+            <a href="/categories/%E5%88%86%E5%B8%83%E5%BC%8F/">分布式</a>
+            </span>
+        </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+    <h2 class="post-toc-title">Contents</h2>
+    <div class="post-toc-content">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#单节点变化"><span class="toc-text">单节点变化</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#单节点变化的BUG"><span class="toc-text">单节点变化的BUG</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#解决方法"><span class="toc-text">解决方法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#其他的讨论"><span class="toc-text">其他的讨论</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#参考文献"><span class="toc-text">参考文献</span></a></li></ol>
+    </div>
+  </div><div class="post-content"><p>通常在实际使用 Raft 过程中，难免会遇到节点变更的问题。</p>
+<a id="more"></a>
+<p>Raft 论文[1] 提出了如何进行节点变更的方法，也就是使用<code>joint consensus</code>，在论文第六章有详细的说明，并且有正确性的证明。</p>
+<h2 id="单节点变化"><a href="#单节点变化" class="headerlink" title="单节点变化"></a>单节点变化</h2><p>同时在作者的博士论文[2]中，提出了一种简化版本，即单节点变化的流程，具体可见论文第4章。</p>
+<p><img src="https://i.loli.net/2021/05/11/v3S7R9aIyWJQgsY.png" alt="1620711351-370263-image.png"><br><em>图来源参考文献[2]</em></p>
+<p>因为如果直接进行节点状态变化，上述例子是从3个节点扩展为5个，那么可能在中间某个时间段会存两种 majorities，会有两个 leader，不满足 Election Safety。究其原因是因为这两个 majorities 不存在交集。所以为了简化，可以将节点变化减少为一个，每次进行节点变化一个一个进行。</p>
+<p><img src="https://i.loli.net/2021/05/11/5X2CTbkw9R8dqLm.png" alt="1620711562-148397-image.png"><br><em>图来源参考文献[2]</em></p>
+<p>如果是一个节点的变化，那么老配置和新配置的 majorities 之间肯定存在交集，从而避免上述问题的产生。</p>
+<h2 id="单节点变化的BUG"><a href="#单节点变化的BUG" class="headerlink" title="单节点变化的BUG"></a>单节点变化的BUG</h2><p><strong>但是</strong>这样是否就一定没有问题？具体的单节点变化流程，大家可以参考文献[2]的描述，在此不详细展开。在论文所描述的步骤中，当节点接受到新的配置后，就立即转向新的配置，无论该配置是否已经committed了，当然这是没有问题的。问题出在按照论文所描述的步骤，会导致已经提交的日志被覆盖。作者也是在发现这个问题后，将它及时<a href="https://groups.google.com/g/raft-dev/c/t4xj6dJTP6E" target="_blank" rel="noopener">公布出来</a>，完整细节参考文献[3]。</p>
+<p>这里举其中的一个例子：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br></pre></td><td class="code"><pre><span class="line">从4个节点移除一个节点,并且移除一个节点</span><br><span class="line"></span><br><span class="line">0. 初始状态:</span><br><span class="line"></span><br><span class="line">S1 (L1): [C]</span><br><span class="line">S2 (F1): [C]</span><br><span class="line">S3 (F1): [C]</span><br><span class="line">S4 (F1): [C]</span><br><span class="line">S5 (F1): []</span><br><span class="line"></span><br><span class="line">其中C的配置是 &#123;S1,S2,S3,S4&#125;.</span><br><span class="line"></span><br><span class="line">1. S5 赶上了S1的状态</span><br><span class="line"></span><br><span class="line">S1 (L1): [C, D]</span><br><span class="line">S2 (F1): [C]</span><br><span class="line">S3 (F1): [C]</span><br><span class="line">S4 (F1): [C]</span><br><span class="line">S5 (F1): [C]</span><br><span class="line"></span><br><span class="line">其中D的配置是 &#123;S1,S2,S3,S4,S5&#125;，代表增加 S5</span><br><span class="line"></span><br><span class="line">2. S1将日志D复制给S5，然后宕机离线</span><br><span class="line"></span><br><span class="line">S1 (L1): [C, D] X</span><br><span class="line">S2 (F1): [C]</span><br><span class="line">S3 (F1): [C]</span><br><span class="line">S4 (F1): [C]</span><br><span class="line">S5 (F1): [C, D]</span><br><span class="line"></span><br><span class="line">3. 此时S2获得来自 &#123;S2, S3, S4&#125; 的投票，成为 leader</span><br><span class="line"></span><br><span class="line">S1 (L1): [C, D] X</span><br><span class="line">S2 (L2): [C]</span><br><span class="line">S3 (F2): [C]</span><br><span class="line">S4 (F2): [C]</span><br><span class="line">S5 (F1): [C, D]</span><br><span class="line"></span><br><span class="line">4. S2开始复制日志E</span><br><span class="line"></span><br><span class="line">S1 (L1): [C, D] X</span><br><span class="line">S2 (L2): [C, E]</span><br><span class="line">S3 (F2): [C]</span><br><span class="line">S4 (F2): [C]</span><br><span class="line">S5 (F1): [C, D]</span><br><span class="line"></span><br><span class="line">其中日志E为 &#123;S2, S3, S4&#125; 代表删除 S1</span><br><span class="line"></span><br><span class="line">5. S2 复制到了S3，满足大多数原则，标志为提交状态</span><br><span class="line"></span><br><span class="line">S1 (L1): [C, D] X</span><br><span class="line">S2 (L2): [C, E]</span><br><span class="line">S3 (F2): [C, E]</span><br><span class="line">S4 (F2): [C]</span><br><span class="line">S5 (F1): [C, D]</span><br><span class="line"></span><br><span class="line">6. S1 恢复后，得到 &#123;S1 S4 S5&#125; 的投票，也满足大多数（老配置D），成为 leader</span><br><span class="line"></span><br><span class="line">S1 (L3): [C, D]</span><br><span class="line">S2 (L2): [C, E]</span><br><span class="line">S3 (F2): [C, E]</span><br><span class="line">S4 (F3): [C]</span><br><span class="line">S5 (F3): [C, D]</span><br><span class="line"></span><br><span class="line">注意 S1 没有已经提交的日志 E</span><br><span class="line"></span><br><span class="line">7. S1 此时复制日志 D 给其他节点，D 会覆盖日志 E（</span><br><span class="line">（因为 D 是 leader ，其他节点同位置的日志 E 和 leader 不一致，会被覆盖）</span><br><span class="line"></span><br><span class="line">S1 (L3): [C, D]</span><br><span class="line">S2 (L2): [C, D]</span><br><span class="line">S3 (F2): [C, D]</span><br><span class="line">S4 (F3): [C, D]</span><br><span class="line">S5 (F3): [C, D]</span><br></pre></td></tr></table></figure>
+<p>原始讨论中还提了其他例子，可以深入看看。</p>
+<h2 id="解决方法"><a href="#解决方法" class="headerlink" title="解决方法"></a>解决方法</h2><p>作者给出了一种解决方法，即节点成为 leader 后，必须先发送一个 <code>NO_OP</code> 日志，避免当前配置下，其他未提交的日志不会覆盖当前已经提交的日志。例如上述步骤 3，S2 发送 <code>NO_OP</code> 后，待<code>NO_OP</code> 提交，那么老配置下的大多数都接受到了，那么据可以阻止没有接受到 <code>NO_OP</code> 当选为 leader，避免覆盖已经提交的日志。</p>
+<p>其实<code>NO_OP</code>的原本作用就是这个：</p>
+<blockquote>
+<p>In a typical Raft implementation, a leader appends a no-op entry to the log when it is elected. This change would mean rejecting or delaying membership change requests until the no-op entry is committed.</p>
+</blockquote>
+<p>也就是在文献[2]提及的这种情况，日志 2 已经被复制到大多数了，但是可能会被日志3覆盖。<br><img src="https://i.loli.net/2021/05/11/auEmnv28WNyBQxc.png" alt="1620713307-467346-5a36498f-f74c-4997-bba5-40bf12356959.png"><br><em>图来源参考文献[2]</em></p>
+<p>当然除了上述的方法，那就是老老实实用 <code>join consensus</code>的方法。</p>
+<h2 id="其他的讨论"><a href="#其他的讨论" class="headerlink" title="其他的讨论"></a>其他的讨论</h2><p>关于这个问题还有很多有趣的讨论，可以扩展阅读</p>
+<ol>
+<li><a href="https://blog.openacid.com/distributed/raft-bug/" target="_blank" rel="noopener">TiDB 在 Raft 成员变更上踩的坑 </a></li>
+<li><a href="https://www.zhihu.com/question/65667634" target="_blank" rel="noopener">关于 Raft 算法的 Single MemberShip 算法的疑问？</a></li>
+<li><a href="https://github.com/baidu/braft/blob/master/docs/cn/raft_protocol.md#membership-management" target="_blank" rel="noopener">braft-节点变更文档</a></li>
+</ol>
+<h2 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h2><p>[1].  Ongaro, Diego, 和John Ousterhout. 《In Search of an Understandable Consensus Algorithm》, 不详, 18.<br>[2].  Ongaro, Diego. 《Consensus: Bridging Theory and Practice》, 不详, 258.<br>[3]. 《bug in single-server membership changes》. 见于 2021年5月11日. <a href="https://groups.google.com/g/raft-dev/c/t4xj6dJTP6E" target="_blank" rel="noopener">https://groups.google.com/g/raft-dev/c/t4xj6dJTP6E</a>.</p>
+
+      </div>
+      <div class="post-copyright">
+    <p class="copyright-item">
+      <span>Author: </span>
+      <a href="http://ehds.github.io">DongSheng</a>
+    </p>
+    <p class="copyright-item">
+      <span>Link: </span>
+      <a href="http://ehds.github.io/2021/05/11/raft-single-peer-change/">http://ehds.github.io/2021/05/11/raft-single-peer-change/</a>
+    </p>
+    <p class="copyright-item">
+      <span>License: </span><a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/" target="_blank">知识共享署名-非商业性使用 4.0 国际许可协议</a>
+    </p>
+  </div>
+      <footer class="post-footer">
+        <div class="post-tags">
+            <a href="/tags/raft/">raft</a>
+            <a href="/tags/%E5%88%86%E5%B8%83%E5%BC%8F/">分布式</a>
+            </div>
+        
+        <nav class="post-nav"><a class="prev" href="/2021/05/29/make-raft-two-successive-leaders-have-consecutive-terms/">
+        <i class="iconfont icon-left"></i>
+        <span class="prev-text nav-default">如何使得 raft 算法相继两个leader 的 term 连续</span>
+        <span class="prev-text nav-mobile">Prev</span>
+      </a>
+    <a class="next" href="/2021/05/08/Merkle-tree-in-bitcoin/">
+        <span class="next-text nav-default">Merkle-Tree在比特币中的应用</span>
+        <span class="prev-text nav-mobile">Next</span>
+        <i class="iconfont icon-right"></i>
+      </a>
+    </nav></footer>
+    </article></div><div class="comments" id="comments"><div id="gitalk-container"></div>
+    </div></div>
+      </main>
+
+      <footer id="footer" class="footer"><div class="social-links"><a href="mailto:ehds@qq.com" class="iconfont icon-email" title="email"></a>
+        <a href="https://github.com/ehds" target="_blank" rel="noopener" class="iconfont icon-github" title="github"></a>
+        <a href="/atom.xml" class="iconfont icon-rss" title="rss"></a>
+    </div><div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a>
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    Theme - 
+    <a class="theme-link" href="https://github.com/ahonn/hexo-theme-even" target="_blank" rel="noopener">Even</a>
+  </span>
+
+  <span class="copyright-year">&copy;2017 - 2022<span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">DongSheng</span>
+  </span>
+</div>
+</footer>
+
+      <div class="back-to-top" id="back-to-top">
+        <i class="iconfont icon-up"></i>
+      </div>
+    </div>
+<script src="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.css"/>
+
+
+<script src="//cdn.jsdelivr.net/npm/js-md5@0.7.3/src/md5.min.js"></script>
+
+<script>
+  var gitalk = new Gitalk({
+    clientID: 'b75057216cc9401f28a0',
+    clientSecret: '6089f1aac89dc7f55aa1cceab307a61e85399bfc',
+    repo: 'ehds.github.io',
+    owner: 'ehds',
+    admin: ['ehds'],
+    id: md5(location.pathname),
+    
+      language: 'en',
+    
+    distractionFreeMode: 'true'
+  });
+  gitalk.render('gitalk-container');
+</script><script type="text/javascript" src="/lib/jquery/jquery.min.js"></script>
+  <script type="text/javascript" src="/lib/slideout/slideout.js"></script>
+  <script type="text/javascript" src="/lib/fancybox/jquery.fancybox.pack.js"></script>
+  <script type="text/javascript" src="/js/src/even.js?v=2.11.0"></script>
+</body>
+</html>

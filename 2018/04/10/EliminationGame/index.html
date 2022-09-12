@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head><meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+<meta name="description" content="Elimination Game 题解"/><meta name="keywords" content="c++, leetcode, 数据结构与算法, Ehds" /><link rel="alternate" href="/atom.xml" title="Ehds"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=2.11.0" />
+<link rel="canonical" href="http://ehds.github.io/2018/04/10/EliminationGame/"/>
+
+<link rel="stylesheet" type="text/css" href="/lib/fancybox/jquery.fancybox.css" /><script type="text/x-mathjax-config">
+    MathJax.Hub.Config({ tex2jax: { inlineMath: [['$','$'], ['\\(','\\)']] } });
+  </script>
+  <script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+<link rel="stylesheet" type="text/css" href="/css/style.css?v=2.11.0" />
+
+<script id="baidu_push">
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+<script>
+  window.config = {"leancloud":{"app_id":null,"app_key":null},"toc":true,"fancybox":true,"pjax":"","latex":true};
+</script>
+
+    <title>Elimination Game 题解 - Ehds</title>
+  <meta name="generator" content="Hexo 4.2.1"><link rel="alternate" href="/atom.xml" title="Ehds" type="application/atom+xml">
+</head>
+
+  <body><div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/." class="logo">Ehds</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list"><a href="/">
+        <li class="mobile-menu-item">Home
+          </li>
+      </a><a href="/archives/">
+        <li class="mobile-menu-item">Archives
+          </li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">Tags
+          </li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">Categories
+          </li>
+      </a><a href="/about/">
+        <li class="mobile-menu-item">About
+          </li>
+      </a></ul>
+</nav>
+<div class="container" id="mobile-panel">
+      <header id="header" class="header"><div class="logo-wrapper">
+  <a href="/." class="logo">Ehds</a>
+</div>
+
+<nav class="site-navbar"><ul id="menu" class="menu"><li class="menu-item">
+          <a class="menu-item-link" href="/">
+            Home
+            </a>
+        </li>
+      <li class="menu-item">
+          <a class="menu-item-link" href="/archives/">
+            Archives
+            </a>
+        </li>
+      <li class="menu-item">
+          <a class="menu-item-link" href="/tags/">
+            Tags
+            </a>
+        </li>
+      <li class="menu-item">
+          <a class="menu-item-link" href="/categories/">
+            Categories
+            </a>
+        </li>
+      <li class="menu-item">
+          <a class="menu-item-link" href="/about/">
+            About
+            </a>
+        </li>
+      </ul></nav>
+</header>
+
+      <main id="main" class="main">
+        <div class="content-wrapper">
+          <div id="content" class="content"><article class="post">
+    <header class="post-header">
+      <h1 class="post-title">Elimination Game 题解
+        </h1>
+
+      <div class="post-meta">
+        <span class="post-time">
+          2018-04-10
+        </span><span class="post-category">
+            <a href="/categories/%E7%AE%97%E6%B3%95/">算法</a>
+            </span>
+        </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+    <h2 class="post-toc-title">Contents</h2>
+    <div class="post-toc-content">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#0x00-题目介绍"><span class="toc-text">0x00 题目介绍</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#0x01-解法"><span class="toc-text">0x01 解法</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#解法一-按部就班"><span class="toc-text">解法一 按部就班</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#解法二-来去递归-一"><span class="toc-text">解法二 来去递归(一)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#解法三-来去递归-二"><span class="toc-text">解法三 来去递归(二)</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#0x02结论"><span class="toc-text">0x02结论</span></a></li></ol>
+    </div>
+  </div><div class="post-content"><p>这道题目出于<a href="https://leetcode.com/problems/elimination-game/description/" target="_blank" rel="noopener">leetcode</a>,题目虽然很简单但是很有趣，因为有趣才能称得上游戏吧！</p>
+<h2 id="0x00-题目介绍"><a href="#0x00-题目介绍" class="headerlink" title="0x00 题目介绍"></a>0x00 题目介绍</h2><p>简单介绍一下题目意思</p>
+<p>给定一个数字N（N&gt;0），一个列表存着1～N的数字。每次从左到右从第一个数字开始，然后隔开一个数字删除数字，一直删除到最后再从右向左删除，一直删除到只剩下一个数字。</p>
+<a id="more"></a>
+<p><strong>Example:</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">Input:</span><br><span class="line">n &#x3D; 9,</span><br><span class="line">1 2 3 4 5 6 7 8 9</span><br><span class="line">2 4 6 8</span><br><span class="line">2 6</span><br><span class="line">6</span><br><span class="line"></span><br><span class="line">Output:</span><br><span class="line">6</span><br></pre></td></tr></table></figure>
+
+<h2 id="0x01-解法"><a href="#0x01-解法" class="headerlink" title="0x01 解法"></a>0x01 解法</h2><h3 id="解法一-按部就班"><a href="#解法一-按部就班" class="headerlink" title="解法一 按部就班"></a>解法一 按部就班</h3><ol>
+<li>思想：直接按照题目意思，模拟删除步骤</li>
+<li>代码：<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">lastRemaining</span><span class="params">(<span class="keyword">int</span> n)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> start = <span class="number">1</span>, <span class="built_in">step</span> = <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">while</span> (n &gt; <span class="number">1</span>) &#123;</span><br><span class="line">            <span class="comment">//模拟删除元素一直到最后元素</span></span><br><span class="line">            start += <span class="built_in">step</span> + (n<span class="number">-2</span>)/<span class="number">2</span> * <span class="number">2</span>*<span class="built_in">step</span>;</span><br><span class="line">            <span class="comment">//每删除一轮剩余元素为该轮元素的一半</span></span><br><span class="line">            n /= <span class="number">2</span>;</span><br><span class="line">            <span class="comment">//每次到达最后一个元素反向并且步数扩大两倍</span></span><br><span class="line">            <span class="comment">//因为每次都隔开删除一个元素，</span></span><br><span class="line">            <span class="comment">//所以下一轮的步数都是上一次的两倍</span></span><br><span class="line">            <span class="built_in">step</span> *= <span class="number">-2</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> start;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+算法时间复杂度:O(logN),空间复杂度O(1);<br>代码思想简单，易懂，一般最开始想到的也是这种算法</li>
+</ol>
+<h3 id="解法二-来去递归-一"><a href="#解法二-来去递归-一" class="headerlink" title="解法二 来去递归(一)"></a>解法二 来去递归(一)</h3><ol>
+<li><p>思想 </p>
+<p> 模拟去回删除元素,去即为从左到右,回即为从右往左,用一个变量代表状态,<br> 每轮删除后剩余这轮元素的一半.递归退出条件为当剩余元素为</p>
+<p> 我们设F(N)为从{1~N}删除的剩余元素.</p>
+<p> 1). 从左往右删除</p>
+<p> 那么每次删除掉的元素为奇数项元素,剩下的元素里全部都是偶数元素,并且最终结果也在这些元素里面.那么此时我们将所有元素同时除以2,此时元素又变为{1<del>N/2},此时问题就变为找出{1</del>N/2}剩余元素<em>2即:F(N) = 2</em>F(N/2);</p>
+<p> (方向—-&gt; N为偶数8) <del>1</del>  2  <del>3</del> 4  <del>5</del>  6  <del>7</del>  8<br> 剩余的元素在2<em>{1,2,3,4}里面 即2</em>F(8/2);</p>
+<p> (方向—-&gt; N为奇数9)<br> <del>1</del> 2 <del>3</del>  4  <del>5</del> 6  <del>7</del>  8  <del>9</del><br> 剩余元素为2<em>{1,2,3,4}即 2</em>F(9/2)</p>
+<p> 2). 从右往左删除</p>
+<p> 如果最后一个元素是偶数,如果我们从右往左删除,剩余元素全部为奇数,为了使得剩余元素全部为偶数(方便下一步运算,因为我们需要把N的问题分解为N/2的问题)那么我们将所有元素加1,这样删除后剩余元素就全部变为偶数了,为了弥补加1,我们需要在获得的结果后减1;<br> 所以当从左往右的时候F(N) = F(N/2)-(1-N%2)=F(N/2)-1+N%2</p>
+<p> 比如:当N=8 list = {1,2,3,4,5,6,7,8}<br> (方向&lt;—- N为偶数8)<br> 1 <del>2</del>  3  <del>4</del> 5  <del>6</del>  7  <del>8</del><br> 答案在剩余元素{1,3,5,7}里面,如果我们写作2<em>{1,2,3,4}答案明显不对,需要修正变为2</em>{1,2,3,4}-1即2*F(8/2)-1;</p>
+<p> (方向&lt;—- N为奇数9)<br> <del>1</del> 2 <del>3</del>  4  <del>5</del> 6  <del>7</del>  8  <del>9</del><br> 剩余元素为2<em>{1,2,3,4}即 2</em>F(9/2)</p>
+<p> 如果我们使用2*F(4/2) 答案明显不对了,所以我们需要在此基础上需要加上一个offset 1 或者在开始的基础上加一</p>
+</li>
+</ol>
+<p>2.递归版本代码</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">n:元素个数</span></span><br><span class="line"><span class="comment">direction:删除方向 true:从左往右 false:从右往左</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">getNext</span><span class="params">(<span class="keyword">int</span> n,<span class="keyword">bool</span> direction)</span></span>&#123; </span><br><span class="line">    <span class="keyword">if</span>(n==<span class="number">1</span>) <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">    <span class="comment">//判断方向 从左往右</span></span><br><span class="line">    <span class="keyword">if</span>(direction) <span class="keyword">return</span> <span class="number">2</span>*getNext(n/<span class="number">2</span>,!direction);</span><br><span class="line">    <span class="comment">// 从右往左  偶数需要减一</span></span><br><span class="line">    <span class="keyword">else</span> <span class="keyword">return</span> <span class="number">2</span>*(getNext(n/<span class="number">2</span>,!direction))<span class="number">-1</span>+n%<span class="number">2</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">lastRemaining1</span><span class="params">(<span class="keyword">int</span> n)</span> </span>&#123;</span><br><span class="line">       <span class="keyword">return</span> getNext(n,<span class="literal">true</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">lastRemaining</span><span class="params">(<span class="keyword">int</span> n)</span> </span>&#123;</span><br><span class="line">       <span class="keyword">return</span> getNext(n,<span class="literal">true</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>时间复杂度O(logN) 空间复杂度O(logN)</p>
+<p>3.迭代版本代码</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">direction:删除方向 true:从左往右 false:从右往左</span></span><br><span class="line"><span class="comment">ratio: 记录当前删除深度</span></span><br><span class="line"><span class="comment">offset: 偏移值(分析如上)</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">lastRemaining</span><span class="params">(<span class="keyword">int</span> n)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">bool</span> direction = <span class="literal">true</span>;</span><br><span class="line">    <span class="keyword">int</span> ratio = <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">int</span> offset = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">while</span>(n!=<span class="number">1</span>)&#123;</span><br><span class="line">        <span class="keyword">if</span>(!direction &amp;&amp; n%<span class="number">2</span>==<span class="number">0</span>) </span><br><span class="line">            offset+=ratio;</span><br><span class="line">        ratio&lt;&lt;=<span class="number">1</span>;</span><br><span class="line">        n/=<span class="number">2</span>;</span><br><span class="line">        direction=!direction;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> ratio-offset;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>时间复杂度O(logN) 空间复杂度O(logN)</p>
+<h3 id="解法三-来去递归-二"><a href="#解法三-来去递归-二" class="headerlink" title="解法三 来去递归(二)"></a>解法三 来去递归(二)</h3><ol>
+<li><p>算法思想</p>
+<p> 也是来往依次删除,把每次删除操作统一为一个方向.这样不需要每次判定方向如何,也不需要判定是否为偶数再去减掉偏移值.</p>
+<p> 如何将删除方向统一为一个方向呢?</p>
+<p> <em>注意:我们每次都是先从左往右删除</em></p>
+<p> 例如:当N=8时</p>
+<p> 方向(—-&gt;) <del>1</del>  2  <del>3</del> 4  <del>5</del>  6  <del>7</del>  8</p>
+<p> 剩余元素在:2*{1,2,3,4}里面, 接着删除,此时我们删除方向反向为右往左.<br> 如果我们将{1,2,3,4}反转,并用4+1-反转后的结果<br> 即:4+1 - {1,2,3,4} = {4,3,2,1} 此时我们从右往左删除{4,3,2,1}就转化为从左往右删除{1,2,3,4}<br> 方向就统一了起来.当然N为奇数的时候也是一样,读者可以手动模拟一下</p>
+</li>
+<li><p>代码</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">lastRemaining</span><span class="params">(<span class="keyword">int</span> n)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(n &lt;= <span class="number">1</span>) &#123; <span class="keyword">return</span> <span class="number">1</span>; &#125;</span><br><span class="line">        <span class="comment">//每次需要删除元素减半</span></span><br><span class="line">        n &gt;&gt;= <span class="number">1</span>;</span><br><span class="line">        <span class="comment">//将方向反转  且结果需要乘以2</span></span><br><span class="line">        <span class="keyword">return</span> (<span class="number">1</span> + n - lastRemaining2(n)) &lt;&lt; <span class="number">1</span>;</span><br><span class="line">    &#125;;</span><br></pre></td></tr></table></figure>
+<p>时间复杂度O(logN) 空间复杂度O(1)<br>短短三行代码就解决了问题,短小精悍!</p>
+</li>
+</ol>
+<h2 id="0x02结论"><a href="#0x02结论" class="headerlink" title="0x02结论"></a>0x02结论</h2><p>有趣的题目千篇一律,精致的解法百里挑一!</p>
+
+      </div>
+      <div class="post-copyright">
+    <p class="copyright-item">
+      <span>Author: </span>
+      <a href="http://ehds.github.io">DongSheng</a>
+    </p>
+    <p class="copyright-item">
+      <span>Link: </span>
+      <a href="http://ehds.github.io/2018/04/10/EliminationGame/">http://ehds.github.io/2018/04/10/EliminationGame/</a>
+    </p>
+    <p class="copyright-item">
+      <span>License: </span><a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/" target="_blank">知识共享署名-非商业性使用 4.0 国际许可协议</a>
+    </p>
+  </div>
+      <footer class="post-footer">
+        <div class="post-tags">
+            <a href="/tags/c/">c++</a>
+            <a href="/tags/leetcode/">leetcode</a>
+            <a href="/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/">数据结构与算法</a>
+            </div>
+        
+        <nav class="post-nav"><a class="prev" href="/2018/05/29/%E6%A4%AD%E5%9C%86%E6%9B%B2%E7%BA%BF%E5%8A%A0%E5%AF%86%E7%AE%97%E6%B3%95/">
+        <i class="iconfont icon-left"></i>
+        <span class="prev-text nav-default">椭圆曲线加密算法介绍</span>
+        <span class="prev-text nav-mobile">Prev</span>
+      </a>
+    <a class="next" href="/2018/01/02/%E4%BB%8E%E9%9B%B6%E5%BC%80%E5%A7%8B%E7%9A%84-JSON-%E5%BA%93%E6%95%99%E7%A8%8B/">
+        <span class="next-text nav-default">从零开始的 JSON 库教程</span>
+        <span class="prev-text nav-mobile">Next</span>
+        <i class="iconfont icon-right"></i>
+      </a>
+    </nav></footer>
+    </article></div><div class="comments" id="comments"><div id="gitalk-container"></div>
+    </div></div>
+      </main>
+
+      <footer id="footer" class="footer"><div class="social-links"><a href="mailto:ehds@qq.com" class="iconfont icon-email" title="email"></a>
+        <a href="https://github.com/ehds" target="_blank" rel="noopener" class="iconfont icon-github" title="github"></a>
+        <a href="/atom.xml" class="iconfont icon-rss" title="rss"></a>
+    </div><div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a>
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    Theme - 
+    <a class="theme-link" href="https://github.com/ahonn/hexo-theme-even" target="_blank" rel="noopener">Even</a>
+  </span>
+
+  <span class="copyright-year">&copy;2017 - 2022<span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">DongSheng</span>
+  </span>
+</div>
+</footer>
+
+      <div class="back-to-top" id="back-to-top">
+        <i class="iconfont icon-up"></i>
+      </div>
+    </div>
+<script src="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.css"/>
+
+
+<script src="//cdn.jsdelivr.net/npm/js-md5@0.7.3/src/md5.min.js"></script>
+
+<script>
+  var gitalk = new Gitalk({
+    clientID: 'b75057216cc9401f28a0',
+    clientSecret: '6089f1aac89dc7f55aa1cceab307a61e85399bfc',
+    repo: 'ehds.github.io',
+    owner: 'ehds',
+    admin: ['ehds'],
+    id: md5(location.pathname),
+    
+      language: 'en',
+    
+    distractionFreeMode: 'true'
+  });
+  gitalk.render('gitalk-container');
+</script><script type="text/javascript" src="/lib/jquery/jquery.min.js"></script>
+  <script type="text/javascript" src="/lib/slideout/slideout.js"></script>
+  <script type="text/javascript" src="/lib/fancybox/jquery.fancybox.pack.js"></script>
+  <script type="text/javascript" src="/js/src/even.js?v=2.11.0"></script>
+</body>
+</html>
